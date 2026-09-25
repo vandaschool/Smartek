@@ -133,6 +133,95 @@ must(not json.loads(t).get('grounded'), 'ask ungrounded')
 for p in ['/connect', '/team', '/rules', '/audit', '/analytics', '/security', '/billing', '/help', '/settings', '/admin']:
     req('GET', p)
 
+
+# ---------------------------------------------------------------- platform actions
+c, t, loc = req('POST', '/billing/checkout', {'tier': 'growth'})
+c, t, _ = req('GET', '/billing')
+must('پلن فعلی' in t and 'پرداخت شد' in t, 'sandbox checkout activates growth')
+c, t, loc = req('POST', '/rules', {'execTh': '0.15', 'estTh': '0.25', 'scaleLo': '0.8', 'scaleHi': '1.2', 'inflation': '0.035', 'attrWindow': '7', 'fraudTh': '0.08', 'auto_calibrate': '1'})
+c, t, _ = req('GET', '/rules')
+must('name="auto_calibrate" value="1" checked' in t, 'rules saved (auto calibrate on)')
+req('POST', '/rules', {'execTh': '0.15', 'estTh': '0.25', 'scaleLo': '0.8', 'scaleHi': '1.2', 'inflation': '0.035', 'attrWindow': '7', 'fraudTh': '0.08'})
+import random
+inv = 'e2e-%d@example.com' % random.randint(1000, 999999)
+req('POST', '/team/invite', {'email': inv, 'role': 'analyst'})
+c, t, _ = req('GET', '/team')
+must(inv in t, 'invite listed as pending')
+iid = re.search(r'/team/invite/(\d+)/revoke', t)
+if iid:
+    req('POST', f'/team/invite/{iid.group(1)}/revoke', {})
+req('POST', '/security/2fa/setup', {})
+c, t, _ = req('GET', '/security')
+must('data-qr="otpauth://totp/' in t, '2FA setup shows QR')
+req('POST', '/security/2fa/enable', {'code': '000000'})
+req('GET', '/security/export')
+req('POST', '/help/ticket', {'body': 'آزمون پشتیبانی خودکار'})
+c, t, _ = req('GET', '/help')
+must('آزمون پشتیبانی خودکار' in t, 'ticket stored')
+req('POST', '/settings/account', {'name': 'مدیر آزمون', 'mail_pace_alert': '1', 'mail_monthly_report': '1'})
+c, t, _ = req('GET', '/settings')
+must('name="mail_campaign_ending" value="1">' in t, 'email pref off persisted')
+req('POST', '/settings/account', {'name': 'مدیر آزمون', 'mail_pace_alert': '1', 'mail_monthly_report': '1', 'mail_campaign_ending': '1'})
+req('POST', '/notifications/read', {})
+
+# second campaign (live) → connector + API
+c, t, loc = req('POST', '/campaigns/new', {})
+cid2 = re.search(r'/c/(\d+)/design', loc).group(1)
+req('POST', f'/c/{cid2}/design', {'name': 'کمپین API', 'goalType': 'خرید', 'goalValue': '1500', 'budget': '300000000', 'from': '1405/08/01', 'to': '1405/08/20',
+                                  'channels[]': ['گوگل', 'تپسل', 'پوش'], 'segments[]': ['کاربر جدید', 'فعال'], 'occasion': 'بدون مناسبت', 'risk': 'متعادل'})
+req('GET', f'/c/{cid2}/insights')
+req('POST', f'/c/{cid2}/plan', {'sel': 'cfo', 'sec': '', 'mix': '100', 'reason': 'سود واحد مثبت برای این فصل مهم‌ترین معیار است'})
+req('POST', f'/c/{cid2}/sim', {'band': 'معمول', 'ext': 'عادی', 'action': 'save'})
+req('POST', '/connect/adtrace', {'api_key': 'mock-key-123'})
+c, t, _ = req('GET', '/connect')
+must('آخرین همگام‌سازی' in t or 'همگام‌سازی اکنون' in t, 'adtrace connected (mock)')
+req('POST', f'/c/{cid2}/link', {'kind': 'adtrace', 'external_id': 'ext-' + cid2})
+req('POST', '/connect/adtrace/sync', {})
+c, t, loc = req('POST', '/api-keys', {'name': 'e2e'})
+c, t, _ = req('GET', '/connect')
+km = re.search(r'value="(sk_loop_[a-f0-9]+)" readonly', t)
+must(km is not None, 'API key shown once')
+c, t, _ = req('GET', f'/c/{cid2}/report.json')
+rep = json.loads(t)['report'] or {}
+rows = []
+for a in rep.get('alloc', []):
+    ch, seg = a['label'].split(' · ')
+    rows.append({'channel': ch, 'segment': seg, 'spend': 50000000, 'installs': 1000, 'conversions': 100 if ch == 'پوش' else 60})
+code = rep.get('chain', [{}])[0].get('v', '').split(' ')[0]
+if km:
+    def api(method, path, body=None, key=km.group(1)):
+        r = urllib.request.Request(BASE + path, data=json.dumps(body).encode() if body is not None else None, method=method,
+                                   headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'})
+        try:
+            resp = urllib.request.urlopen(r)
+            return resp.status, json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            return e.code, json.loads(e.read().decode() or '{}')
+    st, d = api('POST', '/api/v1/results', {'plan_code': code, 'rows': rows, 'fraud_pct': 2, 'window_days': 7})
+    must(st == 201 and d.get('ok') and d['data'].get('cause'), f'API results → run ({st} {d.get("data", {}).get("cause", d.get("error"))})')
+    st, d = api('GET', '/api/v1/campaigns/' + code)
+    must(st == 200 and d['data']['plan']['code'] == code, 'API chain lookup')
+    st, d = api('GET', '/api/v1/campaigns/' + code, key='sk_loop_' + '0' * 40)
+    must(st == 401, 'API rejects bad key')
+c, t, _ = req('GET', f'/c/{cid2}/verify')
+must('/confirm' in t, 'API draft run awaiting confirmation')
+rid = re.search(r'/runs/(\d+)/confirm', t)
+if rid:
+    req('POST', f'/runs/{rid.group(1)}/confirm', {})
+
+# admin
+c, t, _ = req('GET', '/admin')
+must('کلید API متیس' in t, 'admin AI settings rendered')
+req('POST', '/admin/settings', {'tab': 'ai', 'ai_provider': 'mock', 'metis_base_url': 'https://api.metisai.ir/openai/v1', 'metis_model_fast': 'gpt-4o-mini', 'metis_model_smart': 'gpt-4o', 'ai_timeout_fast_ms': '8000', 'ai_timeout_smart_ms': '20000', 'ai_budget_trial': '200000', 'ai_budget_growth': '2000000', 'ai_budget_enterprise': '20000000', 'ai_json_schema__present': '1', 'ai_json_schema': '1', 'ai_debug__present': '1'})
+req('POST', '/admin/ai-test', {})
+c, t, _ = req('GET', '/admin')
+must('کلید متیس وارد نشده است' in t, 'AI test reports missing key')
+tk = re.search(r'/admin/ticket/(\d+)', t)
+if tk:
+    req('POST', f'/admin/ticket/{tk.group(1)}', {'reply': 'پاسخ آزمایشی'})
+req('GET', '/audit?q=' + urllib.parse.quote('قاعده'))
+req('GET', '/analytics')
+
 print('\nRESULT:', 'PASS' if not fails else f'{len(fails)} FAIL')
 for f in fails[:8]:
     print('---', f[0], f[1], f[2]); print(f[3][:600])

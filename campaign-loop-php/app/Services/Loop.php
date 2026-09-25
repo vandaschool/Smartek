@@ -335,6 +335,14 @@ final class Loop
             $result = $e->verify($vi);
             $result['rowResults'] = [['ch' => $vi['ch'], 'seg' => $vi['seg'], 'vi' => $vi, 'vr' => $result]];
         }
+        if (!empty($vi['totals_only']) && !empty($result['calib'])) {
+            $result['calib'] = false;
+            $result['block'] = 'نتیجه به تفکیک ردیف ثبت نشده؛ نسبت‌دادن کل مشاهده به یک ردیف حافظه را آلوده می‌کند.';
+            foreach ($result['rowResults'] as &$rr) {
+                $rr['vr']['calib'] = false;
+            }
+            unset($rr);
+        }
         if ($sim) {
             $sr = $sim['r'];
             $result['withinBand'] = [

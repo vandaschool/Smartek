@@ -33,7 +33,8 @@ $title = $title ?? '';
 <link rel="icon" type="image/png" href="<?= e(asset('img/logo-mark.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset('css/app.css')) ?>">
 </head>
-<body data-page="<?= e($pageKey) ?>">
+<?php $startTour = (int) \App\Core\Session::get('start_tour', 0); \App\Core\Session::forget('start_tour'); ?>
+<body data-page="<?= e($pageKey) ?>"<?= $startTour ? ' data-start-tour="1"' : '' ?>>
 <header class="hdr no-print">
   <div class="brand">
     <a href="<?= e(url('/campaigns')) ?>"><img src="<?= e(asset('img/logo-horizontal.png')) ?>" alt="Campaign Loop"></a>
@@ -152,6 +153,7 @@ $title = $title ?? '';
   </div>
 </div>
 <script type="application/json" id="tour-steps"><?= json_encode($tourSteps, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?></script>
+<?php if (($pageKey ?? "") === "security"): ?><script src="<?= e(asset("js/qrcode.js")) ?>"></script><?php endif; ?>
 <script src="<?= e(asset('js/app.js')) ?>"></script>
 </body>
 </html>

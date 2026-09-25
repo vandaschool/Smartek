@@ -39,7 +39,7 @@ img { max-width: 100%; }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .row.between { justify-content: space-between; } .row.start { align-items: start; } .row.end { align-items: end; } .row.base { align-items: baseline; }
 .col { display: flex; flex-direction: column; gap: 10px; }
-.gap4{gap:4px}.gap6{gap:6px}.gap8{gap:8px}.gap12{gap:12px}.gap14{gap:14px}.gap16{gap:16px}.gap18{gap:18px}.gap20{gap:20px}.gap22{gap:22px}
+.gap4{gap:4px}.gap10{gap:10px}.gap6{gap:6px}.gap8{gap:8px}.gap12{gap:12px}.gap14{gap:14px}.gap16{gap:16px}.gap18{gap:18px}.gap20{gap:20px}.gap22{gap:22px}
 .grow { flex: 1; min-width: 0; }
 .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(var(--min, 280px), 1fr)); align-items: start; }
 .grid.stretch { align-items: stretch; }

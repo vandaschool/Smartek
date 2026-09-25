@@ -4,6 +4,9 @@ DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Pass the Authorization header to PHP (CGI/FastCGI hosts strip it) — needed by /api/v1
+  RewriteCond %{HTTP:Authorization} .
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
   # Block direct access to application internals
   RewriteRule ^(app|database|storage|tests|prompts|tools)(/|$) - [F,L,NC]
   RewriteRule ^(config\.php|config\.sample\.php|README.*|.*\.md|.*\.sql)$ - [F,L,NC]
@@ -20,7 +23,7 @@ DirectoryIndex index.php
   </FilesMatch>
 </IfModule>
 
-<FilesMatch "\.(sql|md|log|lock|json|env)$">
+<FilesMatch "\.(sql|md|log|lock|env|ini)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
