@@ -1,0 +1,8 @@
+campaign-loop-php/config.php
+campaign-loop-php/storage/logs/*
+campaign-loop-php/storage/sessions/*
+campaign-loop-php/storage/cache/*
+campaign-loop-php/storage/uploads/*
+!campaign-loop-php/storage/**/.htaccess
+!campaign-loop-php/storage/**/index.html
+dist/
