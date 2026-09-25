@@ -65,7 +65,11 @@ final class Response
         if (Request::isAjax()) {
             self::json(['error' => $msg ?: 'error', 'code' => $code], $code);
         }
-        View::render('pages/error', ['code' => $code, 'msg' => $msg], Auth::check() ? 'app' : 'public');
+        if (Auth::check() && Auth::ws() !== null) {
+            View::render('pages/error', ['code' => $code, 'msg' => $msg, 'nav' => \App\Services\Nav::build('campaigns'), 'pageKey' => 'error'], 'app');
+        } else {
+            View::render('pages/error', ['code' => $code, 'msg' => $msg], 'bare');
+        }
         throw new HttpStop('abort');
     }
 

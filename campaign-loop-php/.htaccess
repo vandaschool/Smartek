@@ -1,0 +1,30 @@
+# Campaign Loop — Apache configuration
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Block direct access to application internals
+  RewriteRule ^(app|database|storage|tests|prompts|tools)(/|$) - [F,L,NC]
+  RewriteRule ^(config\.php|config\.sample\.php|README.*|.*\.md|.*\.sql)$ - [F,L,NC]
+  # Serve existing files (assets, install/, cron.php) directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(woff2|png|jpg|svg|css|js)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
+<FilesMatch "\.(sql|md|log|lock|json|env)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Deny from all
+  </IfModule>
+</FilesMatch>
