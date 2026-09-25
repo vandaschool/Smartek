@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Campaign Loop — قالب‌های ایمیل</title>
+<link rel="icon" type="image/png" href="./assets/logo-mark.png" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; background: #eef1f3; }
+  * { box-sizing: border-box; }
+  a { color: #066ca5; text-decoration: none; }
+  a:hover { color: #0d8a8a; }
+</style>
+</helmet>
+<div style="direction: rtl; font-family: Vazirmatn, Tahoma, sans-serif; color: #00142b; min-height: 100vh; padding: 36px 24px 72px 24px;">
+  <div style="max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 26px;">
+    <div style="display: flex; flex-direction: column; gap: 8px; max-width: 760px;">
+      <div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">قالب‌های ایمیل تراکنشی · عرض ۶۰۰</div>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 700;">شش ایمیلی که محصول می‌فرستد</h1>
+      <p style="margin: 0; font-size: 14px; color: #3a3f41; line-height: 1.9;">متغیرها داخل <span style="font-family: ui-monospace, monospace; direction: ltr; unicode-bidi: isolate;">{{ }}</span> نوشته شده‌اند. در تولید با جدول‌بندی ایمیل و استایل درون‌خطی پیاده شوند؛ فونت جایگزین Tahoma. ایمیل‌های امنیتی لینک لغو اشتراک ندارند.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 22px; align-items: start;">
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: ui-monospace, monospace; font-size: 11.5px; color: #5b6062; direction: ltr; text-align: right;">verify_email · security</div>
+        <div style="background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4e7;">
+          <div style="padding: 20px 28px; border-bottom: 1px solid #f0f0f0;"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 28px; width: auto; display: block;" /></div>
+          <div style="padding: 26px 28px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="font-size: 12.5px; color: #5b6062;">موضوع: ایمیل خود را تأیید کنید</div>
+            <div style="font-size: 19px; font-weight: 700;">سلام {{ name }}، یک قدم مانده.</div>
+            <div style="font-size: 14px; color: #3a3f41; line-height: 1.95;">برای فعال شدن دعوت هم‌تیمی و خروجی گزارش، ایمیل خود را تأیید کنید. این لینک ۲۴ ساعت اعتبار دارد.</div>
+            <a href="#" style="align-self: flex-start; padding: 12px 22px; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600;">تأیید ایمیل</a>
+            <div style="font-size: 12px; color: #5b6062; line-height: 1.8;">اگر این حساب را شما نساخته‌اید، این ایمیل را نادیده بگیرید.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: ui-monospace, monospace; font-size: 11.5px; color: #5b6062; direction: ltr; text-align: right;">reset_password · security</div>
+        <div style="background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4e7;">
+          <div style="padding: 20px 28px; border-bottom: 1px solid #f0f0f0;"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 28px; width: auto; display: block;" /></div>
+          <div style="padding: 26px 28px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="font-size: 12.5px; color: #5b6062;">موضوع: تعیین رمز عبور تازه</div>
+            <div style="font-size: 19px; font-weight: 700;">درخواست بازیابی رمز عبور</div>
+            <div style="font-size: 14px; color: #3a3f41; line-height: 1.95;">برای حساب {{ email }} درخواست رمز تازه ثبت شد. لینک ۳۰ دقیقه و فقط یک بار معتبر است.</div>
+            <a href="#" style="align-self: flex-start; padding: 12px 22px; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600;">تعیین رمز تازه</a>
+            <div style="background: #fdf6e8; border-radius: 6px; padding: 10px 12px; font-size: 12.5px; color: #6b4d06; line-height: 1.8;">درخواست از {{ device }} در {{ city }} · {{ time }}. اگر شما نبودید، رمزتان را عوض نکنید و به پشتیبانی خبر دهید.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: ui-monospace, monospace; font-size: 11.5px; color: #5b6062; direction: ltr; text-align: right;">invite · transactional</div>
+        <div style="background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4e7;">
+          <div style="padding: 20px 28px; border-bottom: 1px solid #f0f0f0;"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 28px; width: auto; display: block;" /></div>
+          <div style="padding: 26px 28px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="font-size: 12.5px; color: #5b6062;">موضوع: {{ inviter }} شما را به {{ workspace }} دعوت کرد</div>
+            <div style="font-size: 19px; font-weight: 700;">به تیم {{ workspace }} بپیوندید</div>
+            <div style="font-size: 14px; color: #3a3f41; line-height: 1.95;">{{ inviter }} شما را با نقش <strong>{{ role }}</strong> به Campaign Loop دعوت کرده؛ جایی که تیم کمپین‌ها را پیش‌بینی، پایش و راستی‌آزمایی می‌کند.</div>
+            <a href="#" style="align-self: flex-start; padding: 12px 22px; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600;">پذیرش دعوت</a>
+            <div style="font-size: 12px; color: #5b6062;">دعوت تا ۷ روز معتبر است.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: ui-monospace, monospace; font-size: 11.5px; color: #5b6062; direction: ltr; text-align: right;">pace_alert · notification</div>
+        <div style="background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4e7;">
+          <div style="padding: 20px 28px; border-bottom: 1px solid #f0f0f0;"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 28px; width: auto; display: block;" /></div>
+          <div style="padding: 26px 28px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="font-size: 12.5px; color: #5b6062;">موضوع: خرید {{ campaign }} از برنامه عقب است</div>
+            <div style="font-size: 19px; font-weight: 700;">روز {{ day }} از {{ total }}: خرید {{ delta }} عقب‌تر از برنامه</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; border: 1px solid #f0f0f0; border-radius: 8px; overflow: hidden;">
+              <div style="padding: 10px 12px;"><div style="font-size: 11.5px; color: #5b6062;">خرج شده</div><div style="font-size: 15px; font-weight: 700;">{{ spend_pct }}</div></div>
+              <div style="padding: 10px 12px; border-right: 1px solid #f0f0f0;"><div style="font-size: 11.5px; color: #5b6062;">انتظار</div><div style="font-size: 15px; font-weight: 700;">{{ expected_pct }}</div></div>
+              <div style="padding: 10px 12px; border-right: 1px solid #f0f0f0;"><div style="font-size: 11.5px; color: #5b6062;">خرید</div><div style="font-size: 15px; font-weight: 700; color: #b3261e;">{{ conv_pct }}</div></div>
+            </div>
+            <div style="background: #f2f8fc; border-radius: 6px; padding: 12px 14px; font-size: 13.5px; color: #064e77; line-height: 1.85;">{{ realloc_text }}</div>
+            <a href="#" style="align-self: flex-start; padding: 12px 22px; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600;">دیدن پایش</a>
+          </div>
+          <div style="padding: 14px 28px; background: #f8f9fa; font-size: 11.5px; color: #5b6062;">تنظیم اعلان‌ها · لغو ایمیل‌های هشدار</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: ui-monospace, monospace; font-size: 11.5px; color: #5b6062; direction: ltr; text-align: right;">campaign_ending · notification</div>
+        <div style="background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4e7;">
+          <div style="padding: 20px 28px; border-bottom: 1px solid #f0f0f0;"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 28px; width: auto; display: block;" /></div>
+          <div style="padding: 26px 28px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="font-size: 12.5px; color: #5b6062;">موضوع: {{ campaign }} تمام می‌شود — حلقه را ببندید</div>
+            <div style="font-size: 19px; font-weight: 700;">دو روز تا پایان {{ campaign }}</div>
+            <div style="font-size: 14px; color: #3a3f41; line-height: 1.95;">بعد از پایان، نتیجه‌ی واقعی را ثبت کنید تا سیستم علت انحراف را بگوید و نرخ‌ها برای کمپین بعدی دقیق‌تر شوند. ثبت نتیجه حدود ۳ دقیقه طول می‌کشد.</div>
+            <a href="#" style="align-self: flex-start; padding: 12px 22px; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600;">یادآوری در روز پایان</a>
+          </div>
+          <div style="padding: 14px 28px; background: #f8f9fa; font-size: 11.5px; color: #5b6062;">تنظیم اعلان‌ها · لغو این نوع ایمیل</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: ui-monospace, monospace; font-size: 11.5px; color: #5b6062; direction: ltr; text-align: right;">monthly_report · digest · اول هر ماه شمسی ۹:۰۰</div>
+        <div style="background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e0e4e7;">
+          <div style="padding: 20px 28px; background: #00142b; display: flex; align-items: center; gap: 12px;"><img src="./assets/logo-mark.png" alt="" style="width: 34px; height: 34px; background: #fff; border-radius: 8px; padding: 3px;" /><div style="color: #fff; font-size: 15px; font-weight: 600;">گزارش {{ month }} · {{ workspace }}</div></div>
+          <div style="padding: 24px 28px; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div style="background: #f8f9fa; border-radius: 8px; padding: 12px;"><div style="font-size: 11.5px; color: #5b6062;">حلقه‌های بسته‌شده</div><div style="font-size: 22px; font-weight: 700;">{{ closed_loops }}</div></div>
+              <div style="background: #f8f9fa; border-radius: 8px; padding: 12px;"><div style="font-size: 11.5px; color: #5b6062;">POAS ماه</div><div style="font-size: 22px; font-weight: 700; color: #0a7a52;">{{ poas }}</div></div>
+              <div style="background: #f8f9fa; border-radius: 8px; padding: 12px;"><div style="font-size: 11.5px; color: #5b6062;">CAC در برابر هدف</div><div style="font-size: 22px; font-weight: 700;">{{ cac_vs_target }}</div></div>
+              <div style="background: #f8f9fa; border-radius: 8px; padding: 12px;"><div style="font-size: 11.5px; color: #5b6062;">خطای پیش‌بینی</div><div style="font-size: 22px; font-weight: 700;">{{ forecast_error }}</div></div>
+            </div>
+            <div style="font-size: 13.5px; color: #3a3f41; line-height: 1.95;"><strong>بهترین دیدگاه ماه:</strong> {{ best_perspective }} — {{ best_reason }}</div>
+            <div style="font-size: 13.5px; color: #3a3f41; line-height: 1.95;"><strong>کمپین‌های در انتظار نتیجه:</strong> {{ pending_count }}</div>
+            <a href="#" style="align-self: flex-start; padding: 12px 22px; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600;">داشبورد مدیر مالی</a>
+          </div>
+          <div style="padding: 14px 28px; background: #f8f9fa; display: flex; align-items: center; gap: 12px;"><img src="./assets/logo-tagline.png" alt="Campaign Loop" style="height: 30px; width: auto;" /><div style="flex: 1;"></div><span style="font-size: 11.5px; color: #5b6062;">لغو گزارش ماهانه</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

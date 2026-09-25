@@ -1,0 +1,639 @@
+{
+  "rates": [
+    {
+      "ch": "گوگل",
+      "seg": "کاربر جدید",
+      "type": "paid",
+      "cpi": 62000,
+      "cvr": 0.075,
+      "aov": 850000,
+      "variance": 0.22,
+      "n": 6,
+      "ceiling": 25000,
+      "lift": 0.06,
+      "d7": 0.32,
+      "d30": 0.14,
+      "fraud": 0.02,
+      "age": 2,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "گوگل",
+      "seg": "فعال",
+      "type": "paid",
+      "cpi": 58000,
+      "cvr": 0.11,
+      "aov": 1150000,
+      "variance": 0.18,
+      "n": 4,
+      "ceiling": 8000,
+      "lift": 0.05,
+      "d7": 0.61,
+      "d30": 0.42,
+      "fraud": 0.02,
+      "age": 4,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "تپسل",
+      "seg": "کاربر جدید",
+      "type": "paid",
+      "cpi": 45000,
+      "cvr": 0.055,
+      "aov": 850000,
+      "variance": 0.3,
+      "n": 5,
+      "ceiling": 30000,
+      "lift": 0.12,
+      "d7": 0.32,
+      "d30": 0.14,
+      "fraud": 0.07,
+      "age": 1,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "تپسل",
+      "seg": "بازگشتی",
+      "type": "paid",
+      "cpi": 41000,
+      "cvr": 0.09,
+      "aov": 980000,
+      "variance": 0.26,
+      "n": 3,
+      "ceiling": 6000,
+      "lift": 0.09,
+      "d7": 0.44,
+      "d30": 0.24,
+      "fraud": 0.07,
+      "age": 6,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "یکتانت",
+      "seg": "فعال",
+      "type": "paid",
+      "cpi": 50000,
+      "cvr": 0.135,
+      "aov": 1150000,
+      "variance": 0.12,
+      "n": 7,
+      "ceiling": 9000,
+      "lift": 0.08,
+      "d7": 0.61,
+      "d30": 0.42,
+      "fraud": 0.04,
+      "age": 3,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "یکتانت",
+      "seg": "کاربر جدید",
+      "type": "paid",
+      "cpi": 54000,
+      "cvr": 0.07,
+      "aov": 850000,
+      "variance": 0.19,
+      "n": 5,
+      "ceiling": 14000,
+      "lift": 0.07,
+      "d7": 0.32,
+      "d30": 0.14,
+      "fraud": 0.04,
+      "age": 2,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "اینستاگرام",
+      "seg": "کاربر جدید",
+      "type": "paid",
+      "cpi": 38000,
+      "cvr": 0.048,
+      "aov": 850000,
+      "variance": 0.34,
+      "n": 8,
+      "ceiling": 40000,
+      "lift": 0.21,
+      "d7": 0.32,
+      "d30": 0.14,
+      "fraud": 0.05,
+      "age": 5,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "اینستاگرام",
+      "seg": "پرارزش",
+      "type": "paid",
+      "cpi": 72000,
+      "cvr": 0.065,
+      "aov": 2400000,
+      "variance": 0.28,
+      "n": 2,
+      "ceiling": 2500,
+      "lift": 0.18,
+      "d7": 0.71,
+      "d30": 0.55,
+      "fraud": 0.05,
+      "age": 7,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "پوش",
+      "seg": "فعال",
+      "type": "owned",
+      "cpi": 9000,
+      "cvr": 0.062,
+      "aov": 1150000,
+      "variance": 0.14,
+      "n": 11,
+      "ceiling": 12000,
+      "lift": 0.04,
+      "d7": 0.61,
+      "d30": 0.42,
+      "fraud": 0,
+      "age": 1,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "پوش",
+      "seg": "در معرض ریزش",
+      "type": "owned",
+      "cpi": 8500,
+      "cvr": 0.041,
+      "aov": 780000,
+      "variance": 0.2,
+      "n": 9,
+      "ceiling": 9000,
+      "lift": 0.03,
+      "d7": 0.22,
+      "d30": 0.09,
+      "fraud": 0,
+      "age": 3,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "پوش",
+      "seg": "پرارزش",
+      "type": "owned",
+      "cpi": 9500,
+      "cvr": 0.088,
+      "aov": 2400000,
+      "variance": 0.16,
+      "n": 6,
+      "ceiling": 3000,
+      "lift": 0.05,
+      "d7": 0.71,
+      "d30": 0.55,
+      "fraud": 0,
+      "age": 2,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "پیامک",
+      "seg": "در معرض ریزش",
+      "type": "owned",
+      "cpi": 12000,
+      "cvr": 0.052,
+      "aov": 780000,
+      "variance": 0.23,
+      "n": 7,
+      "ceiling": 11000,
+      "lift": 0.1,
+      "d7": 0.22,
+      "d30": 0.09,
+      "fraud": 0,
+      "age": 4,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "پیامک",
+      "seg": "بازگشتی",
+      "type": "owned",
+      "cpi": 11500,
+      "cvr": 0.068,
+      "aov": 980000,
+      "variance": 0.21,
+      "n": 5,
+      "ceiling": 7000,
+      "lift": 0.11,
+      "d7": 0.44,
+      "d30": 0.24,
+      "fraud": 0,
+      "age": 2,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    },
+    {
+      "ch": "پیامک",
+      "seg": "پرارزش",
+      "type": "owned",
+      "cpi": 13000,
+      "cvr": 0.095,
+      "aov": 2400000,
+      "variance": 0.17,
+      "n": 3,
+      "ceiling": 2600,
+      "lift": 0.14,
+      "d7": 0.71,
+      "d30": 0.55,
+      "fraud": 0,
+      "age": 5,
+      "upd": "۱۴۰۵/۰۶/۲۸"
+    }
+  ],
+  "merchant_profile": {
+    "budget": 800000000,
+    "margin": 0.38,
+    "targetCac": 320000,
+    "ltv": 4200000,
+    "goal": "سودآوری",
+    "season": "اوج فروش در آبان و اسفند",
+    "blocked": ""
+  },
+  "campaign_history": [
+    {
+      "id": "ک-۱۰۲",
+      "name": "نصب پاییزه گوگل",
+      "channel": "گوگل",
+      "segment": "کاربر جدید",
+      "spend": 180000000,
+      "installs": 2790,
+      "conversions": 205,
+      "revenue": 174000000,
+      "month": "مهر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۳",
+      "name": "ریتارگت تپسل",
+      "channel": "تپسل",
+      "segment": "کاربر جدید",
+      "spend": 135000000,
+      "installs": 2810,
+      "conversions": 148,
+      "revenue": 125000000,
+      "month": "مهر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۴",
+      "name": "یکتانت فعال‌ها",
+      "channel": "یکتانت",
+      "segment": "فعال",
+      "spend": 90000000,
+      "installs": 1760,
+      "conversions": 231,
+      "revenue": 265000000,
+      "month": "مهر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۵",
+      "name": "پوش هفتگی",
+      "channel": "پوش",
+      "segment": "فعال",
+      "spend": 24000000,
+      "installs": 2600,
+      "conversions": 158,
+      "revenue": 181000000,
+      "month": "مهر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۶",
+      "name": "اینستا برند",
+      "channel": "اینستاگرام",
+      "segment": "کاربر جدید",
+      "spend": 210000000,
+      "installs": 5320,
+      "conversions": 251,
+      "revenue": 213000000,
+      "month": "آبان",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۷",
+      "name": "یازده‌یازده یکتانت",
+      "channel": "یکتانت",
+      "segment": "فعال",
+      "spend": 160000000,
+      "installs": 3180,
+      "conversions": 441,
+      "revenue": 507000000,
+      "month": "آبان",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۸",
+      "name": "پوش پرارزش",
+      "channel": "پوش",
+      "segment": "پرارزش",
+      "spend": 19000000,
+      "installs": 1980,
+      "conversions": 176,
+      "revenue": 422000000,
+      "month": "آبان",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۰۹",
+      "name": "پیامک بازگشت",
+      "channel": "پیامک",
+      "segment": "بازگشتی",
+      "spend": 46000000,
+      "installs": 3950,
+      "conversions": 265,
+      "revenue": 259000000,
+      "month": "آبان",
+      "source": "ورود دستی"
+    },
+    {
+      "id": "ک-۱۱۰",
+      "name": "گوگل فعال",
+      "channel": "گوگل",
+      "segment": "فعال",
+      "spend": 70000000,
+      "installs": 1190,
+      "conversions": 129,
+      "revenue": 148000000,
+      "month": "آذر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۱",
+      "name": "ضدریزش پوش",
+      "channel": "پوش",
+      "segment": "در معرض ریزش",
+      "spend": 21000000,
+      "installs": 2420,
+      "conversions": 97,
+      "revenue": 75000000,
+      "month": "آذر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۲",
+      "name": "پیامک ریزش",
+      "channel": "پیامک",
+      "segment": "در معرض ریزش",
+      "spend": 33000000,
+      "installs": 2680,
+      "conversions": 133,
+      "revenue": 103000000,
+      "month": "آذر",
+      "source": "ورود دستی"
+    },
+    {
+      "id": "ک-۱۱۳",
+      "name": "اینستا پرارزش",
+      "channel": "اینستاگرام",
+      "segment": "پرارزش",
+      "spend": 88000000,
+      "installs": 1190,
+      "conversions": 74,
+      "revenue": 177000000,
+      "month": "آذر",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۴",
+      "name": "تپسل بازگشتی",
+      "channel": "تپسل",
+      "segment": "بازگشتی",
+      "spend": 52000000,
+      "installs": 1250,
+      "conversions": 110,
+      "revenue": 107000000,
+      "month": "دی",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۵",
+      "name": "یکتانت جدید",
+      "channel": "یکتانت",
+      "segment": "کاربر جدید",
+      "spend": 108000000,
+      "installs": 1980,
+      "conversions": 136,
+      "revenue": 115000000,
+      "month": "دی",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۶",
+      "name": "پوش فعال دی",
+      "channel": "پوش",
+      "segment": "فعال",
+      "spend": 27000000,
+      "installs": 3050,
+      "conversions": 183,
+      "revenue": 210000000,
+      "month": "دی",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۷",
+      "name": "پیامک پرارزش",
+      "channel": "پیامک",
+      "segment": "پرارزش",
+      "spend": 31000000,
+      "installs": 2350,
+      "conversions": 219,
+      "revenue": 525000000,
+      "month": "بهمن",
+      "source": "ورود دستی"
+    },
+    {
+      "id": "ک-۱۱۸",
+      "name": "گوگل نوروزی",
+      "channel": "گوگل",
+      "segment": "کاربر جدید",
+      "spend": 240000000,
+      "installs": 3720,
+      "conversions": 285,
+      "revenue": 242000000,
+      "month": "اسفند",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۱۹",
+      "name": "اینستا نوروزی",
+      "channel": "اینستاگرام",
+      "segment": "کاربر جدید",
+      "spend": 265000000,
+      "installs": 6980,
+      "conversions": 321,
+      "revenue": 273000000,
+      "month": "اسفند",
+      "source": "اسمارتک"
+    },
+    {
+      "id": "ک-۱۲۰",
+      "name": "یکتانت اسفند",
+      "channel": "یکتانت",
+      "segment": "فعال",
+      "spend": 140000000,
+      "installs": 2740,
+      "conversions": 384,
+      "revenue": 442000000,
+      "month": "اسفند",
+      "source": "اسمارتک"
+    }
+  ],
+  "perspective_log": [
+    {
+      "id": "ک-۱۱۲",
+      "name": "پیامک ریزش — آذر",
+      "perspective": "سگمنت در معرض ریزش",
+      "reason": "CAC جذب مجدد از کاربر جدید ارزان‌تر بود",
+      "cause": "در دامنه‌ی انتظار",
+      "calib": true,
+      "plannedCac": 248000,
+      "actualCac": 261000,
+      "seeded": true
+    },
+    {
+      "id": "ک-۱۱۳",
+      "name": "اینستا پرارزش — آذر",
+      "perspective": "سگمنت پرارزش",
+      "reason": "AOV این سگمنت دو برابر میانگین بود",
+      "cause": "خطای برآورد",
+      "calib": true,
+      "plannedCac": 890000,
+      "actualCac": 1189000,
+      "seeded": true
+    },
+    {
+      "id": "ک-۱۱۴",
+      "name": "تپسل بازگشتی — دی",
+      "perspective": "مدیرعامل",
+      "reason": "فشار هدف سهم بازار در فصل",
+      "cause": "انحراف اجرا",
+      "calib": false,
+      "plannedCac": 430000,
+      "actualCac": 473000,
+      "seeded": true
+    },
+    {
+      "id": "ک-۱۱۶",
+      "name": "پوش فعال — دی",
+      "perspective": "مسئول کمپین",
+      "reason": "کمترین ریسک عملیاتی برای راه‌اندازی سریع",
+      "cause": "مقیاس، نه کیفیت",
+      "calib": false,
+      "plannedCac": 141000,
+      "actualCac": 148000,
+      "seeded": true
+    },
+    {
+      "id": "ک-۱۱۷",
+      "name": "پیامک پرارزش — بهمن",
+      "perspective": "مدیر مالی",
+      "reason": "تنها ترکیب زیر سقف حاشیه",
+      "cause": "در دامنه‌ی انتظار",
+      "calib": true,
+      "plannedCac": 139000,
+      "actualCac": 142000,
+      "seeded": true
+    }
+  ],
+  "rules": {
+    "execTh": 0.15,
+    "estTh": 0.25,
+    "scaleLo": 0.8,
+    "scaleHi": 1.2,
+    "inflation": 0.035,
+    "attrWindow": 7,
+    "fraudTh": 0.08
+  },
+  "perspectives": [
+    {
+      "id": "cfo",
+      "name": "مدیر مالی",
+      "obj": "max_unit_profit"
+    },
+    {
+      "id": "ceo",
+      "name": "مدیرعامل",
+      "obj": "max_volume"
+    },
+    {
+      "id": "cmo",
+      "name": "مدیر بازاریابی",
+      "obj": "max_composite_rank"
+    },
+    {
+      "id": "analyst",
+      "name": "تحلیل‌گر داده",
+      "obj": "min_variance"
+    },
+    {
+      "id": "ops",
+      "name": "مسئول کمپین",
+      "obj": "max_sample_n"
+    },
+    {
+      "id": "value",
+      "name": "سگمنت پرارزش",
+      "obj": "max_aov_x_cvr"
+    },
+    {
+      "id": "churn",
+      "name": "سگمنت در معرض ریزش",
+      "obj": "min_reacquisition_cost"
+    },
+    {
+      "id": "season",
+      "name": "فصلی و مناسبتی",
+      "obj": "max_seasonal_lift"
+    },
+    {
+      "id": "compete",
+      "name": "رقابتی",
+      "obj": "min_sample_n_acceptable"
+    },
+    {
+      "id": "safe",
+      "name": "محافظه‌کار",
+      "obj": "top_objective_x_0.2"
+    }
+  ],
+  "occasions": [
+    {
+      "k": "بدون مناسبت",
+      "lift": 0,
+      "cpi": 0
+    },
+    {
+      "k": "یلدا (آذر)",
+      "lift": 0.12,
+      "cpi": 0.08
+    },
+    {
+      "k": "بلک‌فرایدی (آبان)",
+      "lift": 0.35,
+      "cpi": 0.25
+    },
+    {
+      "k": "نوروز (اسفند–فروردین)",
+      "lift": 0.28,
+      "cpi": 0.18
+    },
+    {
+      "k": "ماه رمضان",
+      "lift": -0.08,
+      "cpi": -0.05
+    },
+    {
+      "k": "بازگشایی مدارس (شهریور)",
+      "lift": 0.1,
+      "cpi": 0.06
+    }
+  ],
+  "industry_factor": {
+    "گوگل": 1.08,
+    "تپسل": 0.95,
+    "یکتانت": 1.02,
+    "اینستاگرام": 0.9,
+    "پوش": 1.1,
+    "پیامک": 1.05
+  }
+}

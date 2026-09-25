@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="./assets/logo-mark.png" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" />
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  * { box-sizing: border-box; }
+  a { color: #066ca5; text-decoration: none; }
+  a:hover { color: #0d8a8a; }
+</style>
+</helmet>
+<div style="direction: rtl; font-family: Vazirmatn, system-ui, sans-serif; color: #00142b; background: #fff; min-height: 100vh;">
+  <div style="border-bottom: 1px solid #e5e5e5;">
+    <div style="max-width: 860px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; gap: 20px;">
+      <a href="./Landing v2.dc.html"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 32px; width: auto; display: block;" /></a>
+      <div style="flex: 1;"></div>
+      <a href="#terms" style="font-size: 13.5px;">شرایط استفاده</a>
+      <a href="#privacy" style="font-size: 13.5px;">حریم خصوصی</a>
+      <a href="#data" style="font-size: 13.5px;">داده و حذف</a>
+    </div>
+  </div>
+  <div style="max-width: 860px; margin: 0 auto; padding: 40px 24px 72px 24px; display: flex; flex-direction: column; gap: 34px;">
+    <div style="background: #fdf6e8; border: 1px solid #f0e0bd; border-radius: 10px; padding: 14px 16px; font-size: 13.5px; color: #4a3a12; line-height: 1.9;">این متن پیش‌نویس محصول است و پیش از انتشار باید توسط مشاور حقوقی اسمارتک بازبینی شود.</div>
+
+    <div id="terms" style="display: flex; flex-direction: column; gap: 12px;">
+      <h1 style="margin: 0; font-size: 26px; font-weight: 700;">شرایط استفاده</h1>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">Campaign Loop ابزار تصمیم‌یار است، نه اجراکننده‌ی کمپین. همه‌ی پیش‌بینی‌ها برون‌یابی داده‌ی تاریخی خود شماست و تضمین نتیجه نیست. مسئولیت انتخاب دیدگاه و اجرای کمپین با کاربر است.</p>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">مالک فضای کاری مسئول دسترسی اعضای تیم و نقش‌های آن‌هاست. هر تغییر در داده، قواعد و نرخ‌ها با نام کاربر در لاگ تغییرات ثبت می‌شود.</p>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">پلن آزمایشی به ۳ کمپین در ماه محدود است. در پلن‌های پولی، لغو اشتراک در پایان دوره‌ی جاری اعمال می‌شود.</p>
+    </div>
+
+    <div id="privacy" style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 style="margin: 0; font-size: 22px; font-weight: 700;">حریم خصوصی</h2>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">داده‌ی هر مرچنت (نرخ‌ها، تاریخچه‌ی کمپین، پروفایل) فقط در فضای کاری همان مرچنت استفاده می‌شود و برای آموزش مدل یا فروش به شخص ثالث به کار نمی‌رود.</p>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">«مقایسه با صنعت» فقط از آمار تجمیعی و بی‌نام حداقل ۱۰ مرچنت ساخته می‌شود؛ هیچ عدد منفردی از مرچنت دیگر نمایش داده نمی‌شود.</p>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">اعتبار اتصال‌ها (ادتریس، اینترک) و کلیدهای API رمزگذاری‌شده ذخیره می‌شوند. رمز عبور فقط به‌صورت هش نگه داشته می‌شود.</p>
+    </div>
+
+    <div id="data" style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 style="margin: 0; font-size: 22px; font-weight: 700;">داده و حذف</h2>
+      <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">مالک فضای کاری هر زمان می‌تواند نسخه‌ی CSV کامل داده را از صفحه‌ی امنیت دریافت کند یا درخواست حذف دهد. داده ظرف ۳۰ روز از همه‌ی سیستم‌ها و نسخه‌های پشتیبان پاک می‌شود و لاگ حذف نگه داشته می‌شود.</p>
+      <a href="./Campaign Loop v4.dc.html" style="align-self: start; padding: 10px 16px; border: 1px solid #066ca5; border-radius: 6px; font-size: 13.5px;">بازگشت به پنل</a>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

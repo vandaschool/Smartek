@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="./assets/logo-mark.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Campaign Loop — پیش‌بینی و راستی‌آزمایی کمپین مارکتینگ | اسمارتک</title>
+<meta name="description" content="قبل از خرج بودجه بدانید هر کمپین چه نتیجه‌ای می‌دهد؛ بعد از اجرا بفهمید چرا انحراف داشت. ده دیدگاه، پیش‌بینی POAS، راستی‌آزمایی و یادگیری خودکار." />
+<meta property="og:title" content="Campaign Loop — حلقه‌ی کمپین را ببندید" />
+<meta property="og:description" content="طراحی، پیش‌بینی، پایش، راستی‌آزمایی و یادگیری کمپین در یک حلقه." />
+<meta property="og:image" content="./assets/logo-tagline.png" />
+<meta property="og:locale" content="fa_IR" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" />
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  * { box-sizing: border-box; }
+  :focus-visible { outline: 2px solid #066ca5; outline-offset: 2px; }
+  a { color: #0d8a8a; text-decoration: none; }
+  a:hover { color: #0d8a8a; }
+  input, button { font-family: inherit; }
+</style>
+</helmet>
+<div style="direction: rtl; font-family: Poppins, Vazirmatn, system-ui, sans-serif; color: #00142b; background: #f8f9fa;">
+
+  <div style="position: sticky; top: 0; z-index: 20; background: #ffffff; border-bottom: 1px solid #e5e5e5;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 26px;">
+      <a href="#" style="display: block; flex: none;"><img src="./assets/logo-horizontal.png" alt="Campaign Loop" style="height: 36px; width: auto; display: block;" /></a>
+      <div style="display: flex; gap: 22px; align-items: center; flex: 1;">
+        <a href="#how" style="font-size: 13.5px; color: #3a3f41;">چطور کار می‌کند</a>
+        <a href="#stations" style="font-size: 13.5px; color: #3a3f41;">سه ایستگاه</a>
+        <a href="#layers" style="font-size: 13.5px; color: #3a3f41;">معماری دو لایه</a>
+        <a href="#pricing" style="font-size: 13.5px; color: #3a3f41;">قیمت</a>
+        <a href="#faq" style="font-size: 13.5px; color: #3a3f41;">سؤال‌های متداول</a>
+      </div>
+      <div style="display: flex; gap: 9px; align-items: center;">
+        <a href="./Campaign Loop v4.dc.html" style="padding: 8px 14px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 13px; color: #3a3f41; background: #fff;">ورود</a>
+        <a href="./Campaign Loop v4.dc.html" style="padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #fff; background: #066ca5;">شروع رایگان</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width: 1160px; margin: 0 auto; padding: 64px 24px 0 24px; display: flex; flex-direction: column; gap: 34px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: inline-flex; align-self: start; align-items: center; gap: 8px; background: #fff; border: 1px solid #e5e5e5; border-radius: 20px; padding: 6px 13px;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #0d8a8a;"></span>
+          <span style="font-size: 12.5px; color: #3a3f41;">Campaign Loop · نسخه‌ی اولیه</span>
+        </div>
+        <h1 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 40px; line-height: 1.4; font-weight: 700; letter-spacing: -1px; text-wrap: pretty;">کمپین را طراحی کن، پیش‌بینی کن، و بعد <span style="color: #0d8a8a;">ثابت کن کجا اشتباه شد</span>.</h1>
+        <p style="margin: 0; font-size: 16.5px; line-height: 2; color: #3a3f41; max-width: 48ch;">سه ایستگاه روی یک زنجیره‌ی شناسه: مشاوری که ده دیدگاه می‌دهد، پیش‌بینی‌ای که بازه دارد، و راستی‌آزمایی‌ای که انحراف را به علت نسبت می‌دهد و نرخ‌های شما را اصلاح می‌کند.</p>
+        <div style="display: flex; gap: 11px; flex-wrap: wrap; margin-top: 4px;">
+          <a href="./Campaign Loop v4.dc.html" style="padding: 13px 22px; border-radius: 6px; background: #066ca5; color: #fff; font-size: 14.5px; font-weight: 600;">ساختن حساب و شروع</a>
+          <a href="./Campaign Loop v4.dc.html" style="padding: 13px 22px; border-radius: 6px; background: #fff; border: 1px solid #e5e5e5; color: #3a3f41; font-size: 14.5px;">دیدن نمونه با داده‌ی دمو</a>
+        </div>
+        <div style="font-size: 12.5px; color: #8c8c8c; line-height: 1.9;">بدون نیاز به اتصال داده برای شروع · مسیر دستی مستقل کار می‌کند</div>
+      </div>
+
+      <div style="position: relative;">
+        <div style="position: absolute; inset: 18px 18px -18px -18px; background: #edf4f9; border-radius: 12px;"></div>
+        <div style="position: relative; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 10px;">
+          <image-slot id="hero-shot" style="width: 100%; aspect-ratio: 16 / 10;" shape="rounded" radius="12" placeholder="اسکرین‌شات صفحه‌ی اینسایت‌ها (۱۶:۱۰)"></image-slot>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e5e5e5; padding-top: 28px;">
+      <div style="font-size: 12.5px; color: #8c8c8c;">بخشی از سبد محصولات اسمارتک — داده‌ی همین ابزارها ورودی این حلقه است</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px;">
+        <image-slot id="logo-intrack" style="width: 100%; height: 52px;" shape="rounded" radius="8" fit="contain" placeholder="لوگوی اینترک"></image-slot>
+        <image-slot id="logo-adverge" style="width: 100%; height: 52px;" shape="rounded" radius="8" fit="contain" placeholder="لوگوی ادورج"></image-slot>
+        <image-slot id="logo-adtress" style="width: 100%; height: 52px;" shape="rounded" radius="8" fit="contain" placeholder="لوگوی ادتریس"></image-slot>
+        <image-slot id="logo-affilio" style="width: 100%; height: 52px;" shape="rounded" radius="8" fit="contain" placeholder="لوگوی افیلیو"></image-slot>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px; display: flex; flex-direction: column; gap: 22px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">مسئله</div>
+      <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">کمپین تمام می‌شود، ولی هیچ‌کس نمی‌داند چه چیزی یاد گرفتیم.</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px;">
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 9px;">
+        <div style="font-size: 15.5px; font-weight: 600;">پیش‌بینی مکتوب نیست</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">وقتی عدد انتظار جایی ثبت نشده، بعد از کمپین هر روایتی درست به‌نظر می‌رسد. اولین کاری که این ابزار می‌کند، مکتوب‌کردن همان عدد است.</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 9px;">
+        <div style="font-size: 15.5px; font-weight: 600;">انحراف قابل انتساب نیست</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">خروجی کم شد — از اجرا بود، از مقیاس، یا از خطای برآورد؟ بدون جواب این سؤال، اصلاح نرخ‌ها فقط نویز اضافه می‌کند.</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 9px;">
+        <div style="font-size: 15.5px; font-weight: 600;">اتوماسیون به‌جای مشورت</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">ابزاری که خودش کمپین را اجرا می‌کند اتوماسیون است. دستیار واقعی مثل یک تیم مشاور، چند دیدگاه می‌دهد و انتخاب را به شما می‌سپارد.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="how" style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px; display: flex; flex-direction: column; gap: 22px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">چطور کار می‌کند</div>
+      <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">چهار قدم، و هر قدم یک شناسه که به قدم بعد می‌چسبد.</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 9px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #0d8a8a; color: #fff; font-size: 12px; font-weight: 700;">۱</span>
+          <div style="font-size: 15px; font-weight: 600;">مشاور چنددیدگاهی</div>
+        </div>
+        <div style="font-size: 13px; color: #5b6062; line-height: 1.95;">ده تابع هدف روی یک داده: از دید مدیر مالی، مدیرعامل، تحلیل‌گر داده، سگمنت پرارزش و شش زاویه‌ی دیگر. هر اینسایت شاهد عددی دارد.</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 10.5px; color: #bfbfbf; direction: ltr; margin-top: auto;">plan_id</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 9px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #0d8a8a; color: #fff; font-size: 12px; font-weight: 700;">۲</span>
+          <div style="font-size: 15px; font-weight: 600;">پیش‌بینی با بازه</div>
+        </div>
+        <div style="font-size: 13px; color: #5b6062; line-height: 1.95;">قیف نصب، خرید و درآمد با کران بالا و پایین — بازه از نوسان تاریخی همان کانال می‌آید، نه از یک مدل. به‌همراه حکم ریسک و سودآوری.</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 10.5px; color: #bfbfbf; direction: ltr; margin-top: auto;">sim_id</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 9px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #0d8a8a; color: #fff; font-size: 12px; font-weight: 700;">۳</span>
+          <div style="font-size: 15px; font-weight: 600;">راستی‌آزمایی نتیجه</div>
+        </div>
+        <div style="font-size: 13px; color: #5b6062; line-height: 1.95;">انحراف به یکی از پنج علت نسبت داده می‌شود: ناسازگاری داده، انحراف اجرا، مقیاس، خطای برآورد، یا در دامنه‌ی انتظار.</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 10.5px; color: #bfbfbf; direction: ltr; margin-top: auto;">run_id</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 9px;">
+          <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #0d8a8a; color: #fff; font-size: 12px; font-weight: 700;">۴</span>
+          <div style="font-size: 15px; font-weight: 600;">اصلاح حافظه‌ی سیستم</div>
+        </div>
+        <div style="font-size: 13px; color: #5b6062; line-height: 1.95;">فقط در شاخه‌های معتبر، نرخ کانال با وزن نمونه به‌روز می‌شود. کمپین بعدی با نرخ اصلاح‌شده طراحی می‌شود — حلقه بسته شد.</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 10.5px; color: #bfbfbf; direction: ltr; margin-top: auto;">calibration_id</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="stations" style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px; display: flex; flex-direction: column; gap: 40px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">سه ایستگاه</div>
+      <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">هر ایستگاه یک تصمیم را ممکن می‌کند، نه یک گزارش.</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 34px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 13px;">
+        <div style="font-size: 12px; color: #8c8c8c; font-family: ui-monospace, monospace; direction: ltr;">DESIGNER</div>
+        <h3 style="margin: 0; font-size: 22px; font-weight: 700;">ده دیدگاه، ده پیشنهاد متفاوت</h3>
+        <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">هوش مصنوعی دیدگاه اختراع نمی‌کند: هر دیدگاه یک تابع هدف متفاوت روی همان جدول نرخ است. کارت اینسایت شش فیلد دارد — ادعا، پیشنهاد، شاهد، ریسک، معیار موفقیت — و <strong>شاهد اجباری است</strong>.</p>
+        <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 2px;">
+          <div style="font-size: 13px; color: #3a3f41;">· انتخاب یا ترکیب دو دیدگاه با سهم بودجه</div>
+          <div style="font-size: 13px; color: #3a3f41;">· ثبت دلیل انتخاب، به‌عنوان داده‌ی یادگیری</div>
+        </div>
+      </div>
+      <image-slot id="shot-insight" style="width: 100%; aspect-ratio: 4 / 3;" shape="rounded" radius="14" placeholder="اسکرین‌شات کارت اینسایت (۴:۳)"></image-slot>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 34px; align-items: center;">
+      <image-slot id="shot-funnel" style="width: 100%; aspect-ratio: 4 / 3;" shape="rounded" radius="14" placeholder="اسکرین‌شات قیف شبیه‌سازی (۴:۳)"></image-slot>
+      <div style="display: flex; flex-direction: column; gap: 13px;">
+        <div style="font-size: 12px; color: #8c8c8c; font-family: ui-monospace, monospace; direction: ltr;">SIMULATOR</div>
+        <h3 style="margin: 0; font-size: 22px; font-weight: 700;">پیش‌بینی‌ای که حدش را می‌داند</h3>
+        <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">قیف با کران بالا و پایین، و دو حکم صریح: آیا هدف پوشش داده می‌شود، و آیا CAC از حاشیه‌ی هر سفارش بیشتر است. روی خود صفحه نوشته شده که این برون‌یابی نرخ تاریخی است، نه شبیه‌سازی.</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 34px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 13px;">
+        <div style="font-size: 12px; color: #8c8c8c; font-family: ui-monospace, monospace; direction: ltr;">VERIFIER</div>
+        <h3 style="margin: 0; font-size: 22px; font-weight: 700;">کارت انحراف با علت، نه با بهانه</h3>
+        <p style="margin: 0; font-size: 14.5px; line-height: 2; color: #3a3f41;">درخت تصمیم، اولین شرط برقرار را برنده می‌کند و علت را می‌نویسد. ظریف‌ترین قاعده‌ی سیستم همین‌جاست: وقتی انحراف از اجرا یا مقیاس آمده، نرخ کانال غلط نبوده — پس کالیبره نمی‌شود.</p>
+        <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #3a3f41; line-height: 1.95;">مسیر دستی بدون هیچ اتصالی کار می‌کند: پیش‌بینی خودتان را وارد کنید، نتیجه را ثبت کنید، علت را بگیرید.</div>
+      </div>
+      <image-slot id="shot-verifier" style="width: 100%; aspect-ratio: 4 / 3;" shape="rounded" radius="14" placeholder="اسکرین‌شات کارت راستی‌آزمایی (۴:۳)"></image-slot>
+    </div>
+  </div>
+
+  <div id="layers" style="background: #edf4f9; margin-top: 76px; padding: 64px 24px;">
+    <div style="max-width: 1160px; margin: 0 auto; display: flex; flex-direction: column; gap: 26px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">معماری دو لایه</div>
+        <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; color: #00142b; letter-spacing: -0.5px;">لایه‌ی هوش مصنوعی حق ساختن عدد ندارد.</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 2; color: #5b6062; max-width: 62ch;">زیر، یک موتور بهینه‌سازی قطعی و تکرارپذیر مسئله‌ی تخصیص را تحت قیود حل می‌کند. رو، یک لایه‌ی روایت که همان عدد را از دید ذی‌نفع ترجمه می‌کند.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 7px;">
+          <div style="font-size: 12.5px; color: #6b7072;">لایه‌ی ۲ — هوش مصنوعی: تفسیر و ارائه</div>
+          <div style="font-size: 15px; color: #00142b; line-height: 1.9;">اینسایت از دید ذی‌نفع · داشبورد · پاسخ به پرسش</div>
+          <div style="font-size: 12.5px; color: #d04234;">⛔ حق ساختن عدد ندارد</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding-right: 20px;">
+          <div style="font-size: 18px; color: #0d8a8a;">▲</div>
+          <div style="font-size: 12.5px; color: #6b7072;">فقط عدد، با شناسه‌ی منبع</div>
+        </div>
+        <div style="background: #ffffff; border: 1px solid #d9d9d9; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 7px;">
+          <div style="font-size: 12.5px; color: #6b7072;">لایه‌ی ۱ — موتور بهینه‌سازی: قطعی و تکرارپذیر</div>
+          <div style="font-size: 15px; color: #00142b; line-height: 1.9;">حل مسئله‌ی تخصیص تحت قیود · یک بهینه به ازای هر تابع هدف</div>
+        </div>
+      </div>
+      <div style="background: #e8f4f4; border: 1px solid #cde6e6; border-radius: 12px; padding: 16px 18px; font-size: 14px; color: #d9d9d9; line-height: 1.95;">قاعده‌ی مرز: هر عددی که در یک اینسایت یا داشبورد ظاهر می‌شود شناسه‌ای دارد که به یک خروجی مشخص لایه‌ی ۱ برمی‌گردد. عددی که این شناسه را ندارد، نمایش داده نمی‌شود.</div>
+    </div>
+  </div>
+
+  <div style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">ده دیدگاه</div>
+      <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">همان داده، ده زاویه — انسان انتخاب می‌کند.</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">مدیر مالی</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">max unit profit · cac ≤ margin × aov</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">مدیرعامل</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">max output volume</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">مدیر بازاریابی</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">max composite rank</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">تحلیل‌گر داده</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">min variance</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">مسئول کمپین</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">max sample_n</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">سگمنت پرارزش</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">max aov × cvr</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">سگمنت در معرض ریزش</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">min reacquisition cost</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">فصلی و مناسبتی</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">max seasonal lift</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">رقابتی</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">min sample_n, acceptable cac</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 15px 17px; display: flex; flex-direction: column; gap: 5px;">
+        <div style="font-size: 14px; font-weight: 600;">محافظه‌کار</div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: #8c8c8c; direction: ltr;">top objective × 0.2 budget</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="pricing" style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 8px;"><div style="font-size: 12.5px; color: #0d8a8a; font-weight: 600;">قیمت‌گذاری</div><h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">با داده‌ی دستی رایگان شروع کنید؛ با اتصال خودکار رشد کنید.</h2></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px;">
+      
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 18px; font-weight: 700;">آزمایشی</div>
+        <div style="font-size: 17px; font-weight: 600; color: #066ca5;">رایگان</div>
+        <div style="font-size: 13.5px; line-height: 1.9; color: #3a3f41;">برای آزمودن حلقه روی داده‌ی خودتان.</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #3a3f41;"><div>✓ ۳ کمپین در ماه</div><div>✓ ۱ کاربر</div><div>✓ ورود دستی و CSV</div><div>✓ ده دیدگاه، شبیه‌سازی، راستی‌آزمایی</div></div>
+        <a href="./Campaign Loop v4.dc.html" style="margin-top: auto; text-align: center; padding: 11px; border-radius: 6px; font-size: 13.5px; font-weight: 600; border: 1px solid #066ca5; color: #066ca5;">شروع رایگان</a>
+      </div>
+      
+      <div style="background: #00142b; color: #fff; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 18px; font-weight: 700;">رشد</div>
+        <div style="font-size: 17px; font-weight: 600; color: #9fd3d3;">۴٫۹ میلیون تومان / ماه</div>
+        <div style="font-size: 13.5px; line-height: 1.9; color: #d7e2e8;">برای تیم مارکتینگ که هر ماه چند کمپین اجرا می‌کند.</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #d7e2e8;"><div>✓ کمپین نامحدود</div><div>✓ ۵ کاربر با نقش</div><div>✓ اتصال ادتریس و اینترک</div><div>✓ پایش خودکار و اعلان</div><div>✓ گزارش ماهانه برای مدیر</div></div>
+        <a href="./Campaign Loop v4.dc.html" style="margin-top: auto; text-align: center; padding: 11px; border-radius: 6px; font-size: 13.5px; font-weight: 600; background: #0d8a8a; color: #fff;">شروع ۱۴ روز آزمایشی</a>
+      </div>
+      
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 18px; font-weight: 700;">سازمانی</div>
+        <div style="font-size: 17px; font-weight: 600; color: #066ca5;">تماس با فروش</div>
+        <div style="font-size: 13.5px; line-height: 1.9; color: #3a3f41;">برای آژانس‌ها و اکانت‌منیجرهای چند مرچنت.</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #3a3f41;"><div>✓ چند فضای کاری</div><div>✓ ورود یکپارچه (SSO)</div><div>✓ قواعد و آستانه‌ی اختصاصی</div><div>✓ API کامل و SLA</div></div>
+        <a href="#demo" style="margin-top: auto; text-align: center; padding: 11px; border-radius: 6px; font-size: 13.5px; font-weight: 600; border: 1px solid #066ca5; color: #066ca5;">درخواست دمو</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="demo" style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px;">
+    <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">درخواست دموی اختصاصی</h2>
+        <p style="margin: 0; font-size: 14.5px; color: #3a3f41; line-height: 1.95;">۳۰ دقیقه با تیم محصول: یک حلقه‌ی کامل روی داده‌ی نمونه‌ی کسب‌وکار شما. پاسخ ظرف یک روز کاری.</p>
+      </div>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #e8f4f4; border: 1px solid #cde6e6; border-radius: 10px; padding: 20px; font-size: 14px; color: #075e5e; line-height: 1.9;">درخواست {{ form.name }} ثبت شد. همکاران ما با {{ form.email }} تماس می‌گیرند.</div>
+      </sc-if>
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <input value="{{ form.name }}" onChange="{{ onName }}" placeholder="نام و نام خانوادگی" style="padding: 11px 13px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 14px;" />
+          <input value="{{ form.company }}" onChange="{{ onCompany }}" placeholder="نام کسب‌وکار" style="padding: 11px 13px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 14px;" />
+          <input value="{{ form.email }}" onChange="{{ onEmail }}" placeholder="ایمیل کاری" style="padding: 11px 13px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 14px; direction: ltr; text-align: left;" />
+          <select value="{{ form.spend }}" onChange="{{ onSpend }}" style="padding: 11px 13px; border: 1px solid #e5e5e5; border-radius: 6px; font-size: 14px; background: #fff;">
+            <option value="">بودجه‌ی ماهانه‌ی تبلیغات</option><option value="زیر ۵۰۰ میلیون">زیر ۵۰۰ میلیون تومان</option><option value="۵۰۰ میلیون تا ۲ میلیارد">۵۰۰ میلیون تا ۲ میلیارد</option><option value="بالای ۲ میلیارد">بالای ۲ میلیارد</option>
+          </select>
+          <sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12.5px; color: #b3261e;">{{ err }}</div></sc-if>
+          <button onClick="{{ submit }}" style="padding: 12px; border: none; background: #066ca5; color: #fff; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer;">ثبت درخواست</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div id="faq" style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px; display: flex; flex-direction: column; gap: 20px;">
+    <h2 style="margin: 0; font-family: Montserrat, Vazirmatn, sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.5px;">سؤال‌های متداول</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 15px; font-weight: 600;">پس چه چیزی اینجا هوشمند است؟</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">در این نسخه، هیچ‌چیز — و این عمدی است. چیزی که ساخته شده زنجیره‌ی شناسه و مرز دو لایه است. مدل زبانی بعداً روی همین زیرساخت سوار می‌شود؛ بدون آن، هر مدلی فقط جمله‌ی قشنگ می‌سازد.</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 15px; font-weight: 600;">برای شروع چه داده‌ای لازم است؟</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">۱۵ تا ۲۰ کمپین گذشته، حاشیه‌ی سود ناخالص و هدف کسب‌وکار. صفحه‌ی آمادگی داده قبل از طراحی همین‌ها را بررسی می‌کند و می‌گوید کجا کم است.</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 15px; font-weight: 600;">چرا همیشه کالیبره نمی‌کند؟</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">چون اگر انحراف از اجرا یا مقیاس آمده باشد، نرخ کانال غلط نبوده و به‌روزرسانی آن حافظه‌ی سیستم را با نویز خراب می‌کند. در سه شاخه از پنج شاخه، کالیبراسیون عمداً متوقف می‌شود.</div>
+      </div>
+      <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 15px; font-weight: 600;">جای انسان کجاست؟</div>
+        <div style="font-size: 13.5px; color: #5b6062; line-height: 1.95;">انتخاب دیدگاه و ثبت دلیلش. همین یک ستون، بعد از بیست کمپین می‌گوید کدام زاویه در عمل درست از آب درآمده — و آن هسته‌ی واقعی یادگیری این محصول است.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 0 24px;">
+    <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 38px; display: flex; gap: 28px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column; gap: 9px; max-width: 50ch;">
+        <h2 style="margin: 0; font-size: 25px; font-weight: 700; letter-spacing: -0.5px;">یک دور کامل حلقه، زیر پنج دقیقه.</h2>
+        <p style="margin: 0; font-size: 14.5px; color: #5b6062; line-height: 1.95;">با داده‌ی دموی آماده شروع کنید و بعد داده‌ی خودتان را وارد کنید.</p>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="./Campaign Loop v4.dc.html" style="padding: 13px 22px; border-radius: 6px; background: #066ca5; color: #fff; font-size: 14.5px; font-weight: 600;">شروع رایگان</a>
+        <a href="#how" style="padding: 13px 22px; border-radius: 6px; background: #f8f9fa; border: 1px solid #e5e5e5; color: #3a3f41; font-size: 14.5px;">مرور دوباره‌ی حلقه</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 64px; border-top: 1px solid #e5e5e5; background: #fff;">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 32px 24px; display: flex; gap: 24px; flex-wrap: wrap; align-items: center;">
+      <img src="./assets/logo-tagline.png" alt="Campaign Loop — Iterate · Optimize · Grow" style="height: 52px; width: auto; display: block; flex: none;" />
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; flex: 1;">
+        <a href="#how" style="font-size: 13px; color: #5b6062;">چطور کار می‌کند</a>
+        <a href="#stations" style="font-size: 13px; color: #5b6062;">سه ایستگاه</a>
+        <a href="#layers" style="font-size: 13px; color: #5b6062;">معماری</a>
+        <a href="#faq" style="font-size: 13px; color: #5b6062;">سؤال‌های متداول</a>
+        <a href="#pricing" style="font-size: 13px; color: #5b6062;">قیمت</a>
+        <a href="#demo" style="font-size: 13px; color: #5b6062;">درخواست دمو</a>
+        <a href="./Legal.dc.html" style="font-size: 13px; color: #5b6062;">شرایط استفاده</a>
+        <a href="./Legal.dc.html#privacy" style="font-size: 13px; color: #5b6062;">حریم خصوصی</a>
+      </div>
+      <div style="font-size: 12px; color: #5b6062;">نمونه‌ی اولیه‌ی داخلی · اعداد نمایش‌داده‌شده از داده‌ی دمو می‌آیند</div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { form: { name: '', company: '', email: '', spend: '' }, sent: false, err: '' };
+  renderVals() {
+    const S = this.state;
+    const set = k => e => this.setState({ form: Object.assign({}, S.form, { [k]: e.target.value }), err: '' });
+    return {
+      form: S.form, sent: S.sent, notSent: !S.sent, hasErr: !!S.err, err: S.err,
+      onName: set('name'), onCompany: set('company'), onEmail: set('email'), onSpend: set('spend'),
+      submit: () => {
+        if ((S.form.name || '').trim().length < 3) return this.setState({ err: 'نام را کامل وارد کنید.' });
+        if (!/.+@.+\..+/.test(S.form.email)) return this.setState({ err: 'ایمیل کاری معتبر وارد کنید.' });
+        const q = new URLSearchParams(location.search); const utm = ['utm_source', 'utm_medium', 'utm_campaign'].reduce((o, k) => (o[k] = q.get(k) || '', o), {});
+        try { localStorage.setItem('cl_lead_last', JSON.stringify(Object.assign({}, S.form, utm, { at: Date.now() }))); } catch (e) {}
+        this.setState({ sent: true });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
