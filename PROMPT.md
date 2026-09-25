@@ -12,7 +12,7 @@ You are the lead engineer building the **production version of Campaign Loop** f
 5. `docs/AI-INTEGRATION-METIS.md` — LLM layer through Metis
 6. `docs/INTEGRATIONS.md` — Adtrace / Intrack connectors
 7. `docs/TEST-CASES.md`, `docs/DESIGN-TOKENS.md`
-8. `product/PRD-MVP-Campaign-Loop-v5.md`
+8. `product/PRD-Campaign-Loop-v6.md`
 9. Open `design/Campaign Loop v4.dc.html` in a browser and click through: signup → welcome → data (CSV) → setup → design → 10 perspectives → plan → simulate + what-if → pace + realloc → verify + calibrate + undo → close loop → report → dashboards → method → ask → platform pages. Read its `class Component` — it is the executable spec.
 Then give me: a list of every screen, every entity, every endpoint, and any contradictions you found between docs and prototype (prototype wins unless it's a bug).
 
