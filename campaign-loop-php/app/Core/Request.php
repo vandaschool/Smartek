@@ -37,6 +37,11 @@ final class Request
         return $p;
     }
 
+    public static function has(string $key): bool
+    {
+        return array_key_exists($key, $_GET) || array_key_exists($key, $_POST);
+    }
+
     public static function get(string $key, mixed $default = null): mixed
     {
         return $_GET[$key] ?? $default;

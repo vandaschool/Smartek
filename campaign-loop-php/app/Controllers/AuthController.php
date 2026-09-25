@@ -301,7 +301,7 @@ final class AuthController extends Controller
     public function workspaceCreate(): void
     {
         $name = Request::str('name', '', 160) ?: 'فضای کاری من';
-        $wsCount = (int) DB::val('SELECT COUNT(*) FROM memberships WHERE user_id = ? AND role = "owner"', [Auth::id()]);
+        $wsCount = (int) DB::val('SELECT COUNT(*) FROM memberships WHERE user_id = ? AND role = ?', [Auth::id(), 'owner']);
         $enterprise = (bool) DB::val("SELECT 1 FROM memberships m JOIN workspaces w ON w.id = m.workspace_id WHERE m.user_id = ? AND w.tier = 'enterprise'", [Auth::id()]);
         if ($wsCount > 0 && !$enterprise && !Auth::isAdmin()) {
             Session::flash('چند فضای کاری فقط در پلن سازمانی ممکن است.', 'bad');
