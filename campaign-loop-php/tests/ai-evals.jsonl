@@ -1,0 +1,36 @@
+{"q":"ارزان‌ترین کانال کدام است؟","intent":"cheapest_cac","channel":null,"segment":null,"grounded":true}
+{"q":"کدام کانال کمترین CAC را دارد؟","intent":"cheapest_cac","channel":null,"segment":null,"grounded":true}
+{"q":"گران‌ترین جذب کجاست؟","intent":"most_expensive_cac","channel":null,"segment":null,"grounded":true}
+{"q":"بیشترین هزینه‌ی جذب مال کدام ردیف است؟","intent":"most_expensive_cac","channel":null,"segment":null,"grounded":true}
+{"q":"پایدارترین ردیف؟","intent":"most_stable","channel":null,"segment":null,"grounded":true}
+{"q":"کدام کانال کمترین نوسان را دارد؟","intent":"most_stable","channel":null,"segment":null,"grounded":true}
+{"q":"بیشترین ماندگاری روز ۳۰؟","intent":"best_retention","channel":null,"segment":null,"grounded":true}
+{"q":"کاربران کدام کانال بیشتر می‌مانند؟","intent":"best_retention","channel":null,"segment":null,"grounded":true}
+{"q":"نرخ تقلب کجا بالاست؟","intent":"highest_fraud","channel":null,"segment":null,"grounded":true}
+{"q":"کدام کانال نصب تقلبی بیشتری دارد؟","intent":"highest_fraud","channel":null,"segment":null,"grounded":true}
+{"q":"کدام ردیف سودآورتر است؟","intent":"best_poas","channel":null,"segment":null,"grounded":true}
+{"q":"بهترین POAS مال کجاست؟","intent":"best_poas","channel":null,"segment":null,"grounded":true}
+{"q":"وضعیت تپسل","intent":"channel_summary","channel":"تپسل","segment":null,"grounded":true}
+{"q":"گوگل چطور است؟","intent":"channel_summary","channel":"گوگل","segment":null,"grounded":true}
+{"q":"پیامک برای کاربران پرارزش خوب است؟","intent":"channel_segment","channel":"پیامک","segment":"پرارزش","grounded":true}
+{"q":"CAC یکتانت روی کاربر جدید چند است؟","intent":"channel_segment","channel":"یکتانت","segment":"کاربر جدید","grounded":true}
+{"q":"پوش برای کاربران فعال چه نتیجه‌ای دارد؟","intent":"channel_segment","channel":"پوش","segment":"فعال","grounded":true}
+{"q":"فروش ماه بعد چقدر می‌شود؟","intent":"unsupported","channel":null,"segment":null,"grounded":false}
+{"q":"قیمت دلار فردا؟","intent":"unsupported","channel":null,"segment":null,"grounded":false}
+{"q":"بهترین رنگ بنر چیست؟","intent":"unsupported","channel":null,"segment":null,"grounded":false}
+{"q":"هزینه‌ی جذب کدام کانال از همه پایین‌تر است؟","intent":"cheapest_cac","channel":null,"segment":null,"grounded":true}
+{"q":"کدام کانال بیشترین هزینه را برای هر خرید دارد؟","intent":"most_expensive_cac","channel":null,"segment":null,"grounded":true}
+{"q":"قابل پیش‌بینی‌ترین کانال کدام است؟","intent":"most_stable","channel":null,"segment":null,"grounded":true}
+{"q":"ماندگاری D30 کدام ردیف بالاتر است؟","intent":"best_retention","channel":null,"segment":null,"grounded":true}
+{"q":"fraud کدوم کانال بیشتره؟","intent":"highest_fraud","channel":null,"segment":null,"grounded":true}
+{"q":"بیشترین سود در سفارش اول را کدام ترکیب می‌دهد؟","intent":"best_poas","channel":null,"segment":null,"grounded":true}
+{"q":"یکتانت را خلاصه کن","intent":"channel_summary","channel":"یکتانت","segment":null,"grounded":true}
+{"q":"اینستا چه وضعی دارد؟","intent":"channel_summary","channel":"اینستاگرام","segment":null,"grounded":true}
+{"q":"آمار SMS رو بگو","intent":"channel_summary","channel":"پیامک","segment":null,"grounded":true}
+{"q":"نرخ تبدیل گوگل روی کاربران فعال چقدر است؟","intent":"channel_segment","channel":"گوگل","segment":"فعال","grounded":true}
+{"q":"تپسل برای کاربران بازگشتی چطور است؟","intent":"channel_segment","channel":"تپسل","segment":"بازگشتی","grounded":true}
+{"q":"CAC اینستاگرام روی پرارزش‌ها؟","intent":"channel_segment","channel":"اینستاگرام","segment":"پرارزش","grounded":true}
+{"q":"نوتیفیکیشن برای کاربرای ریزشی جواب میده؟","intent":"channel_segment","channel":"پوش","segment":"در معرض ریزش","grounded":true}
+{"q":"رقیب‌ها چقدر خرج می‌کنند؟","intent":"unsupported","channel":null,"segment":null,"grounded":false}
+{"q":"بودجه‌ی ماه آینده را چقدر بگذارم؟","intent":"unsupported","channel":null,"segment":null,"grounded":false}
+{"q":"متن پیامک تبلیغاتی برایم بنویس","intent":"unsupported","channel":null,"segment":null,"grounded":false}

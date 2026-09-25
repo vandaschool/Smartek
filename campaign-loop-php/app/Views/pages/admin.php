@@ -1,17 +1,17 @@
 <?php
 /** @var array $v @var array $breaker @var array $llm @var array $llmErr @var array $stats @var array $occasions @var array $leads @var array $tickets @var array $workspaces @var array $cron @var ?array $aiResult */
 $sel = static function (string $name, array $opts, string $cur): string {
-    $h = '<select class="inp sm" style="width:220px" name="' . e($name) . '" id="f-' . e($name) . '">';
+    $h = '<select class="inp sm" style="width:min(220px,100%)" name="' . e($name) . '" id="f-' . e($name) . '">';
     foreach ($opts as $k => $l) {
         $h .= '<option value="' . e($k) . '"' . ($cur === (string) $k ? ' selected' : '') . '>' . e($l) . '</option>';
     }
     return $h . '</select>';
 };
-$inp = static fn (string $name, string $val, string $extra = '') => '<input class="inp sm ltr" style="width:220px" name="' . e($name) . '" id="f-' . e($name) . '" value="' . e($val) . '"' . $extra . '>';
-$sec = static fn (string $name, string $val) => '<div class="col" style="gap:4px;width:220px"><input class="inp sm ltr" type="password" autocomplete="new-password" name="' . e($name) . '" id="f-' . e($name) . '" placeholder="' . ($val !== '' ? 'ذخیره شده — برای تغییر وارد کنید' : 'وارد نشده') . '">'
+$inp = static fn (string $name, string $val, string $extra = '') => '<input class="inp sm ltr" style="width:min(220px,100%)" name="' . e($name) . '" id="f-' . e($name) . '" value="' . e($val) . '"' . $extra . '>';
+$sec = static fn (string $name, string $val) => '<div class="col" style="gap:4px;width:min(220px,100%)"><input class="inp sm ltr" type="password" autocomplete="new-password" name="' . e($name) . '" id="f-' . e($name) . '" placeholder="' . ($val !== '' ? 'ذخیره شده — برای تغییر وارد کنید' : 'وارد نشده') . '">'
     . ($val !== '' ? '<label class="check xs"><input type="checkbox" name="' . e($name) . '__clear" value="1"> پاک شود</label>' : '') . '</div>';
 $chk = static fn (string $name, string $val, string $label) => '<input type="hidden" name="' . e($name) . '__present" value="1"><label class="check small"><input type="checkbox" name="' . e($name) . '" value="1"' . ($val === '1' ? ' checked' : '') . '> ' . e($label) . '</label>';
-$row = static fn (string $label, string $ctl, string $hint = '', string $for = '') => '<div class="frow" style="align-items:flex-start;border-bottom:1px solid var(--bd3);padding-bottom:9px"><div class="k col" style="gap:2px"><label' . ($for ? ' for="f-' . e($for) . '"' : '') . '>' . e($label) . '</label>' . ($hint ? '<span class="hint">' . e($hint) . '</span>' : '') . '</div>' . $ctl . '</div>';
+$row = static fn (string $label, string $ctl, string $hint = '', string $for = '') => '<div class="frow" style="align-items:flex-start;flex-wrap:wrap;border-bottom:1px solid var(--bd3);padding-bottom:9px"><div class="k col" style="gap:2px;min-width:170px"><label' . ($for ? ' for="f-' . e($for) . '"' : '') . '>' . e($label) . '</label>' . ($hint ? '<span class="hint">' . e($hint) . '</span>' : '') . '</div>' . $ctl . '</div>';
 $bOpen = !empty($breaker['open_until']) && $breaker['open_until'] > time();
 $aiLive = $v['ai_provider'] === 'metis' && $v['metis_api_key'] !== '';
 ?>
@@ -74,7 +74,7 @@ $aiLive = $v['ai_provider'] === 'metis' && $v['metis_api_key'] !== '';
     <?= $row('نام کاربری', $inp('smtp_user', $v['smtp_user']), '', 'smtp_user') ?>
     <?= $row('رمز عبور', $sec('smtp_pass', $v['smtp_pass']), '', 'smtp_pass') ?>
     <?= $row('فرستنده (ایمیل)', $inp('mail_from', $v['mail_from'], ' placeholder="no-reply@example.com"'), '', 'mail_from') ?>
-    <?= $row('فرستنده (نام)', '<input class="inp sm" style="width:220px" name="mail_from_name" id="f-mail_from_name" value="' . e($v['mail_from_name']) . '">', '', 'mail_from_name') ?>
+    <?= $row('فرستنده (نام)', '<input class="inp sm" style="width:min(220px,100%)" name="mail_from_name" id="f-mail_from_name" value="' . e($v['mail_from_name']) . '">', '', 'mail_from_name') ?>
     <div class="row gap8"><button class="btn primary">ذخیره</button><button class="btn" formaction="<?= e(url('/admin/mail-test')) ?>">ارسال ایمیل آزمایشی به من</button></div>
   </form>
 
@@ -84,7 +84,7 @@ $aiLive = $v['ai_provider'] === 'metis' && $v['metis_api_key'] !== '';
     <?= $row('درگاه', $sel('payment_provider', ['sandbox' => 'آزمایشی (بدون پرداخت واقعی)', 'zarinpal_sandbox' => 'زرین‌پال — محیط تست', 'zarinpal' => 'زرین‌پال — واقعی'], $v['payment_provider']), '', 'payment_provider') ?>
     <?= $row('مرچنت کد زرین‌پال', $sec('zarinpal_merchant_id', $v['zarinpal_merchant_id']), '۳۶ کاراکتری، از پنل زرین‌پال', 'zarinpal_merchant_id') ?>
     <?= $row('قیمت پلن رشد (ریال)', $inp('price_growth_rial', $v['price_growth_rial'], ' inputmode="numeric"'), 'مبلغی که به درگاه ارسال می‌شود', 'price_growth_rial') ?>
-    <?= $row('برچسب قیمت', '<input class="inp sm" style="width:220px" name="price_growth_label" id="f-price_growth_label" value="' . e($v['price_growth_label']) . '">', 'متنی که در صفحه‌ی پلن نمایش داده می‌شود', 'price_growth_label') ?>
+    <?= $row('برچسب قیمت', '<input class="inp sm" style="width:min(220px,100%)" name="price_growth_label" id="f-price_growth_label" value="' . e($v['price_growth_label']) . '">', 'متنی که در صفحه‌ی پلن نمایش داده می‌شود', 'price_growth_label') ?>
     <div class="hint ltr" style="text-align:right">Callback: <?= e(url('/billing/callback', [], true)) ?></div>
     <div class="row gap8"><button class="btn primary">ذخیره</button></div>
   </form>

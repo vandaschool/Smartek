@@ -111,12 +111,6 @@ if (!$installed && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSIO
         if (!$hardOk) {
             throw new RuntimeException('پیش‌نیازهای اجباری کامل نیست.');
         }
-        if (!filter_var($f['aemail'], FILTER_VALIDATE_EMAIL)) {
-            throw new RuntimeException('ایمیل مدیر معتبر نیست.');
-        }
-        if (mb_strlen($f['apass']) < 8 || !preg_match('/\pL/u', $f['apass']) || !preg_match('/\d/', $f['apass'])) {
-            throw new RuntimeException('رمز مدیر باید دست‌کم ۸ کاراکتر و شامل حرف و عدد باشد.');
-        }
         $cfg = [
             'base_url' => rtrim(trim($f['url']), '/'),
             'pretty_urls' => $f['pretty'] === '1',
@@ -127,29 +121,61 @@ if (!$installed && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSIO
             'timezone' => 'Asia/Tehran',
         ];
         Config::load($cfg);
-        $pdo = DB::pdo();
+        try {
+            $pdo = DB::pdo();
+        } catch (Throwable $e) {
+            throw new RuntimeException('اتصال به پایگاه داده برقرار نشد. نام پایگاه داده، نام کاربری و رمز را بررسی کنید. (' . $e->getMessage() . ')');
+        }
+        $hasAdmin = trim($f['aemail']) !== '' || $f['apass'] !== '';
+        if ($hasAdmin && !filter_var($f['aemail'], FILTER_VALIDATE_EMAIL)) {
+            throw new RuntimeException('ایمیل مدیر معتبر نیست.');
+        }
+        if ($hasAdmin && (mb_strlen($f['apass']) < 8 || !preg_match('/\pL/u', $f['apass']) || !preg_match('/\d/', $f['apass']))) {
+            throw new RuntimeException('رمز مدیر باید دست‌کم ۸ کاراکتر و شامل حرف و عدد باشد.');
+        }
         $exists = (int) DB::val("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'users'");
         if ($exists) {
-            throw new RuntimeException('این پایگاه داده قبلاً جدول users دارد. یک پایگاه داده‌ی خالی انتخاب کنید.');
-        }
-        foreach ([APP_ROOT . '/database/schema.sql', APP_ROOT . '/database/seed-global.sql'] as $file) {
-            foreach (splitSql((string) file_get_contents($file)) as $stmt) {
-                $pdo->exec($stmt);
+            // database.sql was already imported (phpMyAdmin → Import): only connect and write config.php
+            $ours = (int) DB::val("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name IN ('settings','perspective_log','calibrations')") === 3
+                && DB::val("SELECT v FROM settings WHERE k = 'installed_at'");
+            if (!$ours) {
+                throw new RuntimeException('این پایگاه داده جدول‌های دیگری دارد و متعلق به Campaign Loop نیست. یک پایگاه داده‌ی خالی انتخاب کنید.');
             }
+            if ((int) DB::val('SELECT COUNT(*) FROM settings WHERE k IN (\'metis_api_key\',\'smtp_pass\',\'zarinpal_merchant_id\') AND v <> \'\'') > 0 && !is_file(APP_ROOT . '/config.php')) {
+                // secrets encrypted with another app_key can't be read with the new one → clear them (re-enter in admin)
+                DB::q("UPDATE settings SET v = '' WHERE k IN ('metis_api_key','smtp_pass','zarinpal_merchant_id')");
+            }
+            if ($hasAdmin) {
+                $aid = (int) DB::val('SELECT MIN(id) FROM users WHERE is_admin = 1');
+                DB::q('UPDATE users SET email = ?, name = ?, password_hash = ?, must_change_password = 0, email_verified_at = COALESCE(email_verified_at, NOW()) WHERE id = ?', [
+                    mb_strtolower(trim($f['aemail'])), trim($f['aname']) ?: 'مدیر سامانه', App\Core\Crypto::hashPassword($f['apass']), $aid,
+                ]);
+            }
+            $mode = 'imported';
+        } else {
+            if (!$hasAdmin) {
+                throw new RuntimeException('برای نصب روی پایگاه داده‌ی خالی، ایمیل و رمز حساب مدیر را وارد کنید.');
+            }
+            foreach ([APP_ROOT . '/database/schema.sql', APP_ROOT . '/database/seed-global.sql'] as $file) {
+                foreach (splitSql((string) file_get_contents($file)) as $stmt) {
+                    $pdo->exec($stmt);
+                }
+            }
+            $uid = DB::insert('users', [
+                'email' => mb_strtolower(trim($f['aemail'])), 'name' => trim($f['aname']) ?: 'مدیر سامانه', 'company' => trim($f['company']),
+                'password_hash' => App\Core\Crypto::hashPassword($f['apass']), 'email_verified_at' => DB::now(), 'is_admin' => 1,
+                'prefs' => json_encode(['welcome' => 1]), 'created_at' => DB::now(),
+            ]);
+            $ws = App\Services\Ws::createWorkspace(trim($f['company']) ?: 'فضای کاری من', $uid, $f['demo'] === '1');
+            DB::q("UPDATE workspaces SET tier = 'enterprise' WHERE id = ?", [$ws]);
+            DB::q("INSERT INTO settings (k, v) VALUES ('installed_at', NOW()) ON DUPLICATE KEY UPDATE v = VALUES(v)");
+            $mode = 'fresh';
         }
-        $uid = DB::insert('users', [
-            'email' => mb_strtolower(trim($f['aemail'])), 'name' => trim($f['aname']) ?: 'مدیر سامانه', 'company' => trim($f['company']),
-            'password_hash' => App\Core\Crypto::hashPassword($f['apass']), 'email_verified_at' => DB::now(), 'is_admin' => 1,
-            'prefs' => json_encode(['welcome' => 1]), 'created_at' => DB::now(),
-        ]);
-        $ws = App\Services\Ws::createWorkspace(trim($f['company']) ?: 'فضای کاری من', $uid, $f['demo'] === '1');
-        DB::q("UPDATE workspaces SET tier = 'enterprise' WHERE id = ?", [$ws]);
-        DB::q("INSERT INTO settings (k, v) VALUES ('installed_at', NOW()) ON DUPLICATE KEY UPDATE v = VALUES(v)");
         $php = "<?php\n// Generated by the installer on " . date('Y-m-d H:i') . "\nreturn " . var_export($cfg, true) . ";\n";
         if (@file_put_contents(APP_ROOT . '/config.php', $php) === false) {
-            $done = ['manual' => $php, 'cfg' => $cfg];
+            $done = ['manual' => $php, 'cfg' => $cfg, 'mode' => $mode, 'admin' => $hasAdmin];
         } else {
-            $done = ['manual' => '', 'cfg' => $cfg];
+            $done = ['manual' => '', 'cfg' => $cfg, 'mode' => $mode, 'admin' => $hasAdmin];
         }
     } catch (Throwable $e) {
         $error = $e->getMessage();
@@ -177,6 +203,9 @@ if (!$installed && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSIO
       <div class="callout warn">سرور اجازه‌ی نوشتن config.php را نداد. متن زیر را در فایلی به نام <b>config.php</b> در ریشه‌ی برنامه ذخیره کنید:</div>
       <textarea class="inp mono" rows="14" readonly style="direction:ltr"><?= h($done['manual']) ?></textarea>
     <?php endif; ?>
+    <?php if ($done['mode'] === 'imported' && !$done['admin']): ?>
+      <div class="callout info">پایگاه داده‌ی واردشده متصل شد. ورود پیش‌فرض: <span class="mono">admin@example.com</span> با رمز <span class="mono">ChangeMe123</span> — در اولین ورود رمز را عوض می‌کنید.</div>
+    <?php endif; ?>
     <div class="h3 mt8">کار بعدی</div>
     <ol class="small t2" style="line-height:2.1;margin:0;padding-right:18px">
       <li>پوشه‌ی <span class="mono">install</span> را حذف کنید.</li>
@@ -186,7 +215,8 @@ if (!$installed && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSIO
     <a class="btn primary lg" href="../login">ورود به پنل</a>
   </div>
 <?php else: ?>
-  <div class="head" style="margin-bottom:18px"><h1 class="title">نصب Campaign Loop</h1><p class="lead">یک پایگاه داده‌ی خالی MySQL یا MariaDB بسازید (از cPanel ← MySQL Databases)، سپس اطلاعات آن را اینجا وارد کنید. نصب‌کننده جدول‌ها را می‌سازد، حساب مدیر را ایجاد می‌کند و config.php را می‌نویسد.</p></div>
+  <div class="head" style="margin-bottom:18px"><h1 class="title">نصب Campaign Loop</h1><p class="lead">یک پایگاه داده‌ی خالی MySQL یا MariaDB بسازید (از cPanel ← MySQL Databases)، سپس اطلاعات آن را اینجا وارد کنید. نصب‌کننده جدول‌ها را می‌سازد، حساب مدیر را ایجاد می‌کند و config.php را می‌نویسد.</p>
+    <p class="lead"><b>اگر فایل <span class="mono">database/database.sql</span> را قبلاً در phpMyAdmin وارد کرده‌اید</b>، همین فرم فقط اتصال را برقرار و config.php را می‌سازد؛ بخش «حساب مدیر» اختیاری است (خالی بماند = ورود با admin@example.com / ChangeMe123).</p></div>
   <div class="card" style="margin-bottom:16px">
     <div class="h3">پیش‌نیازها</div>
     <?php foreach ($checks as [$label, $ok, $extra, $hard]): ?>
@@ -212,8 +242,8 @@ if (!$installed && $_SERVER['REQUEST_METHOD'] === 'POST' && hash_equals($_SESSIO
     <div class="h3">حساب مدیر</div>
     <div class="grid" style="--min:220px">
       <div class="field"><label>نام</label><input class="inp" name="aname" value="<?= h($f['aname']) ?>" required></div>
-      <div class="field"><label>ایمیل</label><input class="inp ltr" type="email" name="aemail" value="<?= h($f['aemail']) ?>" required></div>
-      <div class="field"><label>رمز عبور</label><input class="inp ltr" type="password" name="apass" required placeholder="حداقل ۸ کاراکتر، حرف و عدد"></div>
+      <div class="field"><label>ایمیل</label><input class="inp ltr" type="email" name="aemail" value="<?= h($f['aemail']) ?>" placeholder="برای پایگاه داده‌ی واردشده اختیاری"></div>
+      <div class="field"><label>رمز عبور</label><input class="inp ltr" type="password" name="apass" placeholder="حداقل ۸ کاراکتر، حرف و عدد"></div>
       <div class="field"><label>نام کسب‌وکار / فضای کاری</label><input class="inp" name="company" value="<?= h($f['company']) ?>" required></div>
     </div>
     <label class="check"><input type="checkbox" name="demo" value="1"<?= $f['demo'] === '1' ? ' checked' : '' ?>> بارگذاری داده‌ی دمو (۱۴ ردیف نرخ، ۱۹ کمپین تاریخی) — برای تست یک حلقه‌ی کامل در ۵ دقیقه</label>

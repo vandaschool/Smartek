@@ -136,7 +136,7 @@ final class App
         $r->post('/security/delete-request', [P::class, 'deleteRequest'], $auth + ['can' => 'team']);
         $r->get('/billing', [P::class, 'billing'], $auth);
         $r->post('/billing/checkout', [P::class, 'checkout'], $auth + ['can' => 'billing']);
-        $r->get('/billing/callback', [P::class, 'paymentCallback'], $auth);
+        $r->get('/billing/callback', [P::class, 'paymentCallback']);
         $r->get('/help', [P::class, 'help'], $auth);
         $r->post('/help/ticket', [P::class, 'ticket'], $auth);
         $r->get('/settings', [P::class, 'settings'], $auth);

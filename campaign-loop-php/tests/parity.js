@@ -1,6 +1,6 @@
 // Dumps prototype engine outputs on the seed data, for PHP parity testing.
 // Usage: node tests/parity.js <path-to-engine.js>
-const { createEngine } = require(process.argv[2]);
+const { createEngine } = require(require('path').resolve(process.argv[2] || __dirname + '/ref-engine.js'));
 const e = createEngine();
 const out = {};
 out.cpiAdj = e.state.rates.map(r => e.cpiAdj(r));

@@ -8,6 +8,9 @@ final class Crypto
     private static function key(): string
     {
         $k = (string) Config::get('app_key', '');
+        if ($k === '' || str_starts_with($k, 'CHANGE_ME')) {
+            throw new \RuntimeException('app_key in config.php is not set. Run /install or put 64 random hex characters in app_key.');
+        }
         if (strlen($k) === 64 && ctype_xdigit($k)) {
             return (string) hex2bin($k);
         }

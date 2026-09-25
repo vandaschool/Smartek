@@ -79,7 +79,7 @@ final class Response
         header('X-Frame-Options: SAMEORIGIN');
         header('Referrer-Policy: strict-origin-when-cross-origin');
         header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
-        header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; form-action 'self' https://www.zarinpal.com https://sandbox.zarinpal.com; base-uri 'self'");
+        header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; form-action 'self' https://payment.zarinpal.com https://www.zarinpal.com https://sandbox.zarinpal.com; base-uri 'self'");
         if (Request::isHttps()) {
             header('Strict-Transport-Security: max-age=31536000');
         }

@@ -44,11 +44,16 @@ foreach (Seed::rates() as $r) {
         $q($r['ch']), $q($r['seg']), $q($r['type']), $r['cpi'], $r['cvr'], $r['aov'], $r['variance'], $r['n'], $r['ceiling'], $r['lift'], $r['d7'], $r['d30'], $r['fraud'], $r['age']
     );
 }
+$row = static function (string $table, array $data) use ($q): string {
+    return 'INSERT INTO `' . $table . '` (`' . implode('`,`', array_keys($data)) . '`,`workspace_id`,`created_at`) VALUES ('
+        . implode(',', array_map($q, array_values($data))) . ',1,NOW());';
+};
+// identical to Ws::seedDemo(): every key of the seed arrays is a column
 foreach (Seed::history() as $h) {
-    $out[] = sprintf("INSERT INTO `campaign_history` (`workspace_id`,`code`,`name`,`channel`,`segment`,`spend`,`installs`,`conversions`,`revenue`,`month`,`source`,`created_at`) VALUES (1,%s,%s,%s,%s,%d,%d,%d,%d,%s,%s,NOW());", $q($h['code']), $q($h['name']), $q($h['channel']), $q($h['segment']), $h['spend'], $h['installs'], $h['conversions'], $h['revenue'], $q($h['month']), $q($h['source']));
+    $out[] = $row('campaign_history', $h);
 }
 foreach (Seed::perspectiveLog() as $l) {
-    $out[] = sprintf("INSERT INTO `perspective_log` (`workspace_id`,`code`,`name`,`perspective`,`reason`,`cause`,`calibrated`,`planned_cac`,`actual_cac`,`seeded`,`created_at`) VALUES (1,%s,%s,%s,%s,%s,%d,%d,%d,1,NOW());", $q($l['code']), $q($l['name']), $q($l['perspective']), $q($l['reason']), $q($l['cause']), $l['calibrated'], $l['planned_cac'], $l['actual_cac']);
+    $out[] = $row('perspective_log', $l);
 }
 $out[] = "INSERT INTO `settings` (`k`,`v`) VALUES ('installed_at', NOW()) ON DUPLICATE KEY UPDATE `v` = VALUES(`v`);";
 file_put_contents(APP_ROOT . '/database/database.sql', implode("\n", $out) . "\n");

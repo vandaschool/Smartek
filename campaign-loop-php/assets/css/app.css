@@ -41,7 +41,7 @@ img { max-width: 100%; }
 .col { display: flex; flex-direction: column; gap: 10px; }
 .gap4{gap:4px}.gap10{gap:10px}.gap6{gap:6px}.gap8{gap:8px}.gap12{gap:12px}.gap14{gap:14px}.gap16{gap:16px}.gap18{gap:18px}.gap20{gap:20px}.gap22{gap:22px}
 .grow { flex: 1; min-width: 0; }
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(var(--min, 280px), 1fr)); align-items: start; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(var(--min, 280px), 100%), 1fr)); align-items: start; }
 .grid.stretch { align-items: stretch; }
 .mt4{margin-top:4px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mb0{margin-bottom:0}
 .stack > * + * { margin-top: 20px; }

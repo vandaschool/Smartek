@@ -1,6 +1,6 @@
 <?php
 // Compares the PHP engine with the prototype JS engine on the seed data.
-// Usage: node tests/parity.js ../engine/engine.js > /tmp/js.json && php tests/parity.php /tmp/js.json
+// Usage: node tests/parity.js tests/ref-engine.js > /tmp/js.json && php tests/parity.php /tmp/js.json
 declare(strict_types=1);
 
 define('APP_ROOT', dirname(__DIR__));
