@@ -150,8 +150,8 @@ final class CampaignController extends Controller
         }
         DB::update('campaigns', ['reason_draft' => $reason], ['id' => $c['id']]);
         $ins = Loop::j($c['insights']) ?: [];
-        $perspName = current(array_filter($ins, static fn ($i) => $i['id'] === $sel))['perspective'] ?? '';
-        $spec = mb_strlen($reason) >= 10 ? AI::reasonHint($ws, $reason, $perspName, (string) (Ws::profile($ws)['goal'] ?? ''), '') : null;
+        [$perspName, $claim, $second] = AiController::cardContext($ws, (int) $c['id'], $sel, $sec);
+        $spec = mb_strlen($reason) >= 10 ? AI::reasonHint($ws, $reason, $perspName, (string) (Ws::profile($ws)['goal'] ?? ''), $claim, $second) : null;
         $r = Loop::savePlan($ws, $c, $sel, $sec, $mix, $reason, $spec['is_specific'] ?? null);
         if (!$r['ok']) {
             Session::old(['_error' => $r['error']]);
@@ -183,6 +183,13 @@ final class CampaignController extends Controller
         [$c, $plan] = $this->needPlan($id, 'sim');
         $ws = $this->ws();
         $e = Ws::engine($ws);
+        // view-only band/ext exploration (not persisted) for roles that can't save the forecast
+        if (isset(Engine::BAND[Request::str('band')])) {
+            $c['sim_band'] = Request::str('band');
+        }
+        if (isset(Engine::EXT[Request::str('ext')])) {
+            $c['sim_ext'] = Request::str('ext');
+        }
         $s = Loop::simulate($ws, $c, $plan);
         $saved = Loop::latestSim((int) $c['id']);
         $wb = max(-50, min(100, Request::int('wb', 0)));
@@ -217,7 +224,17 @@ final class CampaignController extends Controller
         $ws = $this->ws();
         $band = Request::str('band', (string) $c['sim_band']);
         $ext = Request::str('ext', (string) $c['sim_ext']);
-        DB::update('campaigns', ['sim_band' => isset(Engine::BAND[$band]) ? $band : 'معمول', 'sim_ext' => isset(Engine::EXT[$ext]) ? $ext : 'عادی', 'updated_at' => DB::now()], ['id' => $c['id']]);
+        $band = isset(Engine::BAND[$band]) ? $band : 'معمول';
+        $ext = isset(Engine::EXT[$ext]) ? $ext : 'عادی';
+        // only a planner may change the saved forecast, and never after the actual result is recorded;
+        // everyone else can still explore bands on the page without persisting them
+        if (!Auth::can('plan') || !empty($c['current_run_id'])) {
+            if (Request::str('action') === 'save') {
+                $this->flash(!empty($c['current_run_id']) ? 'نتیجه‌ی واقعی این کمپین ثبت شده؛ پیش‌بینی ثبت‌شده دیگر تغییر نمی‌کند.' : 'نقش «' . Auth::roleLabel() . '» اجازه‌ی ثبت پیش‌بینی را ندارد.', 'bad');
+            }
+            Response::redirect('/c/' . $c['id'] . '/sim?' . http_build_query(['band' => $band, 'ext' => $ext]));
+        }
+        DB::update('campaigns', ['sim_band' => $band, 'sim_ext' => $ext, 'updated_at' => DB::now()], ['id' => $c['id']]);
         if (Request::str('action') === 'save') {
             $c = Loop::campaign($ws, (int) $c['id']);
             $s = Loop::saveSim($ws, $c, $plan);
@@ -247,9 +264,19 @@ final class CampaignController extends Controller
         Response::redirect('/c/' . $c['id'] . '/sim');
     }
 
+    /** A recorded result freezes the plan, forecast and pacing (the result was verified against them). @param array<string,mixed> $c */
+    private function denyAfterResult(array $c, string $back): void
+    {
+        if (!empty($c['current_run_id']) || $c['status'] === 'closed') {
+            $this->flash('نتیجه‌ی واقعی این کمپین ثبت شده؛ طرح، پیش‌بینی و پایش آن دیگر تغییر نمی‌کند. برای طرح تازه یک کمپین جدید بسازید.', 'bad');
+            Response::redirect('/c/' . $c['id'] . '/' . $back);
+        }
+    }
+
     public function refreshRates(string $id): void
     {
         [$c, $plan] = $this->needPlan($id, 'sim');
+        $this->denyAfterResult($c, 'sim');
         $ws = $this->ws();
         $before = Loop::simulate($ws, $c, $plan);
         $alloc = Loop::refreshAlloc($ws, $plan['alloc']);
@@ -288,6 +315,7 @@ final class CampaignController extends Controller
     public function paceSave(string $id): void
     {
         [$c, $plan] = $this->needPlan($id, 'pace');
+        $this->denyAfterResult($c, 'pace');
         $ws = $this->ws();
         $days = Loop::durationDays($c);
         $pc = [
@@ -333,6 +361,7 @@ final class CampaignController extends Controller
     public function realloc(string $id): void
     {
         [$c, $plan] = $this->needPlan($id, 'pace');
+        $this->denyAfterResult($c, 'pace');
         $ws = $this->ws();
         $last = Loop::latestPace((int) $c['id']);
         if (!$last) {
@@ -414,6 +443,10 @@ final class CampaignController extends Controller
         if ($c['status'] === 'closed') {
             $this->flash('این کمپین بسته شده است.', 'bad');
             Response::redirect('/c/' . $c['id'] . '/report');
+        }
+        if ($why = Loop::reRecordBlocked($c)) {
+            $this->flash($why, 'bad');
+            Response::redirect('/c/' . $c['id'] . '/verify#card');
         }
         $sim = Loop::ensureSim($ws, $c, $plan);
         $ab = (array) Request::post('ab', []);
@@ -518,6 +551,11 @@ final class CampaignController extends Controller
         $run = Loop::run((int) $id);
         if (!$run || (int) $run['workspace_id'] !== $ws || $run['status'] !== 'draft') {
             Response::abort(404);
+        }
+        $rc = $run['campaign_id'] ? Loop::campaign($ws, (int) $run['campaign_id']) : null;
+        if ($rc && ($why = Loop::reRecordBlocked($rc) ?? ($rc['status'] === 'closed' ? 'این کمپین بسته شده است.' : null))) {
+            $this->flash($why, 'bad');
+            Response::redirect('/c/' . $rc['id'] . '/verify');
         }
         DB::update('runs', ['status' => 'confirmed'], ['id' => $run['id']]);
         if ($run['campaign_id']) {

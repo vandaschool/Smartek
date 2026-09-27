@@ -188,6 +188,9 @@ final class AdminController extends Controller
         }
         $reply = Request::str('reply', '', 4000);
         DB::update('support_tickets', ['reply' => $reply, 'status' => $reply !== '' ? 'answered' : 'open'], ['id' => (int) $id]);
+        if ($t['workspace_id']) {
+            Audit::log('پاسخ پشتیبانی', '#' . $id, (int) $t['workspace_id']);
+        }
         if ($reply !== '' && $t['user_id'] && $t['workspace_id']) {
             DB::insert('notifications', ['workspace_id' => $t['workspace_id'], 'user_id' => $t['user_id'], 'kind' => 'info', 'type' => 'ticket', 'text' => 'به درخواست پشتیبانی شما پاسخ داده شد.', 'link' => '/help', 'created_at' => DB::now()]);
             $u = DB::one('SELECT email FROM users WHERE id = ?', [$t['user_id']]);

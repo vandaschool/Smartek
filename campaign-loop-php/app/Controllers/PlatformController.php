@@ -409,6 +409,7 @@ final class PlatformController extends Controller
             Response::redirect('/help');
         }
         DB::insert('support_tickets', ['workspace_id' => $this->ws(), 'user_id' => Auth::id(), 'body' => $body, 'created_at' => DB::now()]);
+        Audit::log('ثبت درخواست پشتیبانی', mb_substr($body, 0, 80));
         Audit::notify('درخواست پشتیبانی ثبت شد. پاسخ تا ۴ ساعت کاری.', 'ok', '/help', $this->ws(), null, 'ticket');
         $this->flash('ثبت شد — پاسخ تا ۴ ساعت کاری');
         Response::redirect('/help');
@@ -450,6 +451,7 @@ final class PlatformController extends Controller
             $upd['name'] = $name;
         }
         DB::update('users', $upd, ['id' => $u['id']]);
+        Audit::log('ویرایش حساب کاربری', 'نام و ایمیل‌های اعلان' . ($off ? ' · خاموش: ' . implode('، ', $off) : ''));
         $this->flash('حساب کاربری ذخیره شد.');
         Response::redirect('/settings');
     }

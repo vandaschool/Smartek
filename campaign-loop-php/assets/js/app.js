@@ -187,7 +187,7 @@
       clearTimeout(tmr);
       if (reason.value.trim().length < 10) { if (hint) hint.hidden = true; return; }
       tmr = setTimeout(function () {
-        CL.post(reason.getAttribute('data-hint-url'), { reason: reason.value, perspective: reason.getAttribute('data-perspective') || '' }).then(function (d) {
+        CL.post(reason.getAttribute('data-hint-url'), { reason: reason.value, perspective: reason.getAttribute('data-perspective') || '', cid: reason.getAttribute('data-cid') || 0, sel: reason.getAttribute('data-sel') || '', sec: reason.getAttribute('data-sec') || '' }).then(function (d) {
           if (!hint) return;
           if (d && d.hint) { hint.textContent = d.hint; hint.hidden = false; } else hint.hidden = true;
         }).catch(function () { });

@@ -74,6 +74,20 @@ final class Loop
         return $r;
     }
 
+    /**
+     * A campaign's result can be re-recorded only while the current result has no active calibration;
+     * otherwise one campaign would adjust the rates twice. Returns the reason, or null when allowed.
+     * @param array<string,mixed> $c
+     */
+    public static function reRecordBlocked(array $c): ?string
+    {
+        if (empty($c['current_run_id'])) {
+            return null;
+        }
+        $active = (int) DB::val('SELECT COUNT(*) FROM calibrations WHERE run_id = ? AND reverted_at IS NULL', [(int) $c['current_run_id']]);
+        return $active > 0 ? 'کالیبراسیون نتیجه‌ی قبلی این کمپین اعمال شده است. برای ثبت دوباره‌ی نتیجه، ابتدا همان کالیبراسیون را برگردانید تا نرخ‌ها دو بار از یک کمپین اصلاح نشوند.' : null;
+    }
+
     /** Displayed status (adds computed awaiting_result). @param array<string,mixed> $c */
     public static function status(array $c): string
     {

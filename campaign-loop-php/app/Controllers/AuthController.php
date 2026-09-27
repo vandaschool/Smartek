@@ -245,6 +245,10 @@ final class AuthController extends Controller
             DB::update('users', ['password_hash' => Crypto::hashPassword($p), 'must_change_password' => 0], ['id' => $t['user_id']]);
             DB::q('UPDATE email_tokens SET used_at = NOW() WHERE id = ?', [$t['id']]);
             DB::q('UPDATE sessions SET revoked_at = NOW() WHERE user_id = ? AND revoked_at IS NULL', [$t['user_id']]);
+            $lw = (int) DB::val('SELECT last_workspace_id FROM users WHERE id = ?', [$t['user_id']]);
+            if ($lw) {
+                Audit::log('بازیابی رمز عبور با ایمیل', 'همه‌ی نشست‌ها پایان یافت', $lw);
+            }
         });
         Session::flash('رمز عبور تازه ثبت شد. وارد شوید.');
         Response::redirect('/login');
@@ -338,6 +342,7 @@ final class AuthController extends Controller
             return;
         }
         DB::update('users', ['password_hash' => Crypto::hashPassword($p), 'must_change_password' => 0], ['id' => $u['id']]);
+        Audit::log('تغییر رمز عبور', 'نشست‌های دیگر پایان یافت');
         DB::q('UPDATE sessions SET revoked_at = NOW() WHERE user_id = ? AND id <> ? AND revoked_at IS NULL', [$u['id'], Auth::sessionId()]);
         Session::flash('رمز عبور تغییر کرد.');
         Response::redirect('/campaigns');

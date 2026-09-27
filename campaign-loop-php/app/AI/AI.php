@@ -54,7 +54,37 @@ final class AI
 
     public static function system(string $task): string
     {
-        return self::block('_shared.v1.md', 'System (shared)') . "\n\n" . self::block($task . '.v1.md', 'System');
+        $sys = self::block('_shared.v1.md', 'System (shared)') . "\n\n" . self::block($task . '.v1.md', 'System');
+        $shots = $task === 'ask_intent' ? '' : self::fewShotText($task);
+        if ($shots !== '') {
+            $sys .= "\n\nEXAMPLES — illustrative only. They use different data: never copy their numbers, names or sentences; "
+                . "use only this input's facts. They show the expected tone, length and JSON shape.\n" . $shots;
+        }
+        return $sys;
+    }
+
+    /** Raw «## Few-shot» section of a prompt file (markdown, up to the next heading). */
+    private static function fewShotText(string $task): string
+    {
+        $s = (string) @file_get_contents(APP_ROOT . '/prompts/' . $task . '.v1.md');
+        if (!preg_match('/^## Few-shot[^\n]*\n(.*?)(?=^## |\z)/msu', $s, $m)) {
+            return '';
+        }
+        return trim($m[1]);
+    }
+
+    /** Few-shot table rows «| `{user json}` | `{assistant json}` |» as chat message pairs. @return list<array{role:string,content:string}> */
+    private static function fewShotPairs(string $task): array
+    {
+        $out = [];
+        preg_match_all('/^\|\s*`(\{.*?\})`\s*\|\s*`(\{.*?\})`\s*\|\s*$/mu', self::fewShotText($task), $m, PREG_SET_ORDER);
+        foreach ($m as $x) {
+            if (is_array(json_decode($x[1], true)) && is_array(json_decode($x[2], true))) {
+                $out[] = ['role' => 'user', 'content' => $x[1]];
+                $out[] = ['role' => 'assistant', 'content' => $x[2]];
+            }
+        }
+        return $out;
     }
 
     /** @return array<string,mixed>|null */
@@ -132,7 +162,8 @@ final class AI
         }
         $model = $tier === 'smart' ? Settings::get('metis_model_smart', 'gpt-4o') : Settings::get('metis_model_fast', 'gpt-4o-mini');
         $userMsg = json_encode($ctx, JSON_UNESCAPED_UNICODE);
-        $key = hash('sha256', $task . self::VERSION . $model . $userMsg);
+        $system = self::system($task);
+        $key = hash('sha256', $task . self::VERSION . $model . md5($system) . $userMsg);
         $cached = DB::one('SELECT v FROM ai_cache WHERE k = ? AND expires_at > NOW()', [$key]);
         if ($cached) {
             self::logCall($ws, $task, $model, 0, 0, 0, 'cached');
@@ -146,7 +177,7 @@ final class AI
             self::logCall($ws, $task, $model, 0, 0, 0, 'fallback', 'budget');
             return ['data' => null, 'status' => 'fallback'];
         }
-        $messages = [['role' => 'system', 'content' => self::system($task)], ['role' => 'user', 'content' => $userMsg]];
+        $messages = array_merge([['role' => 'system', 'content' => $system]], self::fewShotPairs($task), [['role' => 'user', 'content' => $userMsg]]);
         $schema = self::schema($task);
         $timeout = (int) Settings::get($tier === 'smart' ? 'ai_timeout_smart_ms' : 'ai_timeout_fast_ms', $tier === 'smart' ? '20000' : '8000');
         $attempts = 0;
@@ -236,7 +267,7 @@ final class AI
         $ch = in_array($d['channel'] ?? null, Engine::CHANNELS, true) ? $d['channel'] : null;
         $seg = in_array($d['segment'] ?? null, Engine::SEGMENTS, true) ? $d['segment'] : null;
         $intent = (string) $d['intent'];
-        if ((float) ($d['confidence'] ?? 1) < 0.5) {
+        if ((float) ($d['confidence'] ?? 1) <= 0.5) {
             $intent = 'unsupported';
         }
         if ($intent === 'channel_segment' && (!$ch || !$seg)) {
@@ -274,7 +305,7 @@ final class AI
     }
 
     /** @param array<string,mixed> $ins @param array<string,mixed> $profile @return array{why:string,risk:string}|null */
-    public static function insightExplain(int $ws, array $ins, array $profile, string $risk, Engine $e): ?array
+    public static function insightExplain(int $ws, array $ins, array $profile, string $risk, Engine $e, float $budget = 0, array $rates = []): ?array
     {
         $w = $ins['alloc'][0] ?? null;
         if (!$w) {
@@ -297,6 +328,18 @@ final class AI
         foreach ($ins['alloc'] as $i => $a) {
             $facts[] = $f('alloc#' . $i . '.share', 'سهم ' . $a['ch'] . '/' . $a['seg'], (float) $a['share'], Fmt::pct((float) $a['share'], 0));
         }
+        // perspective-specific facts promised by the prompt (same values the card's claim uses)
+        if ($ins['id'] === 'churn' && $rates) {
+            $nu = $e->newUserCac($rates);
+            $facts[] = $f('rates:*|کاربر جدید#min_cac', 'کمترین CAC کاربر جدید', $nu, Fmt::money($nu) . ' تومان');
+        }
+        if ($ins['id'] === 'season') {
+            $facts[] = $f($ref . '#seasonal_lift', 'ضریب اوج تاریخی', (float) ($w['lift'] ?? 0), Fmt::pct((float) ($w['lift'] ?? 0), 0));
+        }
+        if ($ins['id'] === 'safe' && $budget > 0) {
+            $facts[] = $f('insight:safe#test_budget', 'بودجه‌ی تست', (float) $ins['exp']['budget'], Fmt::money((float) $ins['exp']['budget']) . ' تومان');
+            $facts[] = $f('campaign#budget', 'بودجه‌ی کل', $budget, Fmt::money($budget) . ' تومان');
+        }
         $goal = (string) ($profile['goal'] ?? '');
         $ctx = [
             'perspective_id' => $ins['id'], 'perspective_name' => $ins['perspective'], 'objective' => $ins['objective'],
@@ -306,7 +349,20 @@ final class AI
             'flags' => ['low_sample' => (int) $w['n'] < 5, 'benchmark' => ($w['source'] ?? '') === 'benchmark', 'poas_negative' => $ins['exp']['poas'] < 0, 'fits_goal' => $e->fitScore($ins['id'], $goal, $risk) > 0],
             'static_claim' => $ins['claim'], 'static_risk' => $ins['risk'], 'facts' => $facts,
         ];
-        $r = self::run('insight_explain', $ctx, 'fast', $ws, static fn (array $d): bool => self::str($d['why'] ?? null, 320) && self::str($d['risk'] ?? null, 320));
+        $flags = $ctx['flags'];
+        $r = self::run('insight_explain', $ctx, 'fast', $ws, static function (array $d) use ($flags): bool {
+            if (!self::str($d['why'] ?? null, 320) || !self::str($d['risk'] ?? null, 320)) {
+                return false;
+            }
+            // mandatory caveats (prompt «MANDATORY CAVEATS») must appear in `risk`
+            $need = ['low_sample' => 'نمونه', 'benchmark' => 'مرجع', 'poas_negative' => 'ضرر'];
+            foreach ($need as $flag => $word) {
+                if (!empty($flags[$flag]) && mb_strpos($d['risk'], $word) === false) {
+                    return false;
+                }
+            }
+            return $flags['fits_goal'] || mb_strpos($d['risk'], 'هدف') !== false;
+        });
         return $r['data'] ? ['why' => (string) $r['data']['why'], 'risk' => (string) $r['data']['risk']] : null;
     }
 
@@ -359,7 +415,7 @@ final class AI
                     return false;
                 }
             }
-            if (empty($vr['calib']) && mb_strpos($d['next_step'], 'کالیبراسیون را اعمال') !== false) {
+            if (empty($vr['calib']) && preg_match('/کالیبره کنید|اعمال کالیبراسیون|کالیبراسیون را (?:بررسی و )?اعمال/u', $d['next_step'] . ' ' . $d['summary'])) {
                 return false;
             }
             return true;
@@ -434,9 +490,9 @@ final class AI
     }
 
     /** @return array{is_specific:bool,hint:?string}|null */
-    public static function reasonHint(int $ws, string $reason, string $perspective, string $goal, string $claim): ?array
+    public static function reasonHint(int $ws, string $reason, string $perspective, string $goal, string $claim, ?string $secondary = null): ?array
     {
-        $ctx = ['reason' => mb_substr($reason, 0, 600), 'perspective_name' => $perspective, 'secondary_perspective_name' => null, 'business_goal' => $goal, 'card_claim' => mb_substr($claim, 0, 400), 'facts' => []];
+        $ctx = ['reason' => mb_substr($reason, 0, 600), 'perspective_name' => $perspective, 'secondary_perspective_name' => $secondary ?: null, 'business_goal' => $goal, 'card_claim' => mb_substr($claim, 0, 400), 'facts' => []];
         $r = self::run('plan_reason_hint', $ctx, 'fast', $ws, static fn (array $d): bool => is_bool($d['is_specific'] ?? null) && (($d['hint'] ?? null) === null || self::str($d['hint'], 140)));
         if (!$r['data']) {
             return null;

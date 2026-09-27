@@ -44,10 +44,20 @@ final class Response
         echo "\u{FEFF}";
         $out = fopen('php://output', 'w');
         foreach ($rows as $r) {
-            fputcsv($out, array_map(static fn ($x) => $x === null ? '' : (string) $x, $r), ',', '"', '\\');
+            fputcsv($out, array_map(static fn ($x) => self::csvCell($x), $r), ',', '"', '\\');
         }
         fclose($out);
         throw new HttpStop('csv');
+    }
+
+    /** Neutralize spreadsheet formulas (CSV injection): text starting with = + - @ tab or CR gets a leading apostrophe. */
+    public static function csvCell(mixed $x): string
+    {
+        $v = $x === null ? '' : (string) $x;
+        if ($v !== '' && !is_numeric($v) && preg_match('/^[=+\-@\t\r]/', $v)) {
+            return "'" . $v;
+        }
+        return $v;
     }
 
     public static function download(string $filename, string $content, string $type): never

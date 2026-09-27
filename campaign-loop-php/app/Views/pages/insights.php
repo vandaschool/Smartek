@@ -74,7 +74,7 @@ $locked = !empty($c['current_run_id']);
           <input type="range" class="teal" min="10" max="90" step="5" name="mix" value="<?= (int) $mix ?>" data-label="#mixv"></div>
       <?php else: ?><input type="hidden" name="mix" value="100"><?php endif; ?>
       <div class="col gap8"><label class="lbl-s" for="reason">چرا این دیدگاه؟ (ثبت می‌شود — بعد از بیست کمپین همین ستون می‌گوید مشاور واقعی چه زاویه‌ای دارد)</label>
-        <textarea id="reason" name="reason" rows="2" class="inp" minlength="10" required data-reason-hint="#reason-hint" data-hint-url="<?= e(url('/ai/reason-hint')) ?>" data-perspective="<?= e($selIns['perspective']) ?>"><?= e($reason) ?></textarea>
+        <textarea id="reason" name="reason" rows="2" class="inp" minlength="10" required data-reason-hint="#reason-hint" data-hint-url="<?= e(url('/ai/reason-hint')) ?>" data-perspective="<?= e($selIns['perspective']) ?>" data-cid="<?= (int) $c['id'] ?>" data-sel="<?= e($sel) ?>" data-sec="<?= e($sec) ?>"><?= e($reason) ?></textarea>
         <div class="ai-box" id="reason-hint" hidden style="font-size:12.5px"></div></div>
       <?php if ($error): ?><div class="callout bad"><?= e($error) ?></div><?php endif; ?>
       <div class="row gap10">

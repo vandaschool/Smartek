@@ -8,6 +8,10 @@ $frac = $pace['frac'];
     <p class="lead">عدد تجمعی تا امروز را وارد کنید. سیستم آن را با سهم روزانه‌ی پیش‌بینی مقایسه می‌کند تا انحراف را قبل از پایان کمپین ببینید.</p>
   </div>
   <div class="grid" style="--min:300px;gap:18px">
+    <?php if (!empty($c['current_run_id']) || $c['status'] === 'closed'): ?>
+    <div class="card"><div class="h3">پایش بسته شد</div><div class="small t2" style="line-height:1.9">نتیجه‌ی واقعی این کمپین ثبت شده؛ پایش دیگر تغییر نمی‌کند. آخرین داده‌ی پایش در کنار همین صفحه باقی است.</div>
+      <a class="btn sm" href="<?= e(url('/c/' . $c['id'] . '/verify')) ?>" style="align-self:start">دیدن نتیجه</a></div>
+    <?php else: ?>
     <form method="post" action="<?= e(url('/c/' . $c['id'] . '/pace')) ?>" class="card"><?= csrf_field() ?>
       <div class="row between base"><div class="h3">داده‌ی امروز</div><div class="small t3">روز <?= fa($pc['day']) ?> از <?= fa($days) ?></div></div>
       <div class="bar thin"><i style="width:<?= round($frac * 100) ?>%"></i></div>
@@ -21,6 +25,7 @@ $frac = $pace['frac'];
       </div>
       <?php if ($prefilled): ?><div class="hint">داده‌ی نمونه در فرم قرار گرفت؛ برای ثبت، «ثبت پایش» را بزنید.</div><?php endif; ?>
     </form>
+    <?php endif; ?>
 
     <div class="col gap14">
       <div class="card flush">

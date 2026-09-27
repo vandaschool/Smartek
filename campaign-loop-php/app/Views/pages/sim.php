@@ -92,10 +92,14 @@ $simCode = $saved['code'] ?? '';
     <?php endif; ?>
     <?php if ($versions): ?>
       <div class="col gap4" style="border-top:1px solid var(--bd3);padding-top:10px"><div class="small" style="font-weight:600">نسخه‌های قبلی طرح</div>
-        <?php foreach ($versions as $v): ?><div class="small t2">v<?= fa($v['version']) ?> · <?= e($v['perspective']) ?> · <?= e($v['note'] ?: ($v['reason'] ?: '—')) ?> · <span class="muted"><?= e(jdt($v['created_at'])) ?></span></div><?php endforeach; ?></div>
+        <?php foreach ($versions as $v): ?><div class="small t2">نسخه‌ی <?= fa($v['version']) ?> · <?= e($v['perspective']) ?> · <?= e($v['note'] ?: ($v['reason'] ?: '—')) ?> · <span class="muted"><?= e(jdt($v['created_at'])) ?></span></div><?php endforeach; ?></div>
     <?php endif; ?>
   </div>
 
+  <?php if ($locked || !can('plan')): ?>
+  <a class="btn primary lg" href="<?= e(url('/c/' . $c['id'] . '/pace')) ?>" style="align-self:start">رفتن به پایش ←</a>
+  <?php else: ?>
   <form method="post" action="<?= e(url('/c/' . $c['id'] . '/sim')) ?>"><?= csrf_field() ?><input type="hidden" name="action" value="save"><input type="hidden" name="band" value="<?= e($c['sim_band']) ?>"><input type="hidden" name="ext" value="<?= e($c['sim_ext']) ?>">
     <button class="btn primary lg">ثبت پیش‌بینی و رفتن به پایش ←</button></form>
+  <?php endif; ?>
 </div>

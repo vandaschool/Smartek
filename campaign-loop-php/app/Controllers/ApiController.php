@@ -118,6 +118,9 @@ final class ApiController
             'reach' => max(0, (float) ($in['reach'] ?? 0)), 'holdout' => max(0, min(100, (float) ($in['holdout_pct'] ?? 0))),
         ];
         $confirm = !empty($in['confirm']);
+        if ($confirm && ($why = Loop::reRecordBlocked($c))) {
+            $this->fail(409, 'calibrated', 'The current result of this campaign has an applied calibration; revert it in the app before confirming a new result.');
+        }
         DB::q("DELETE FROM runs WHERE campaign_id = ? AND status = 'draft'", [$c['id']]);
         $rid = Loop::verify($ws, $c, $vi, 'api', $confirm ? 'confirmed' : 'draft');
         $run = Loop::run($rid);

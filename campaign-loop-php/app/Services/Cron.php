@@ -271,6 +271,11 @@ final class Cron
         $c = DB::q('DELETE FROM sessions WHERE (revoked_at IS NOT NULL AND revoked_at < DATE_SUB(NOW(), INTERVAL 30 DAY)) OR last_seen_at < DATE_SUB(NOW(), INTERVAL 60 DAY)')->rowCount();
         $d = DB::q('DELETE FROM email_tokens WHERE expires_at < DATE_SUB(NOW(), INTERVAL 7 DAY)')->rowCount();
         DB::q('DELETE FROM llm_calls WHERE created_at < DATE_SUB(NOW(), INTERVAL 180 DAY)');
+        foreach (glob(APP_ROOT . '/storage/uploads/*.csv') ?: [] as $f) {
+            if (filemtime($f) < time() - 86400) {
+                @unlink($f);
+            }
+        }
         return "cache $a · limits $b · sessions $c · tokens $d";
     }
 }

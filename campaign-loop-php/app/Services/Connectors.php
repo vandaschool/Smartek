@@ -150,7 +150,7 @@ final class Connectors
         if (!$prev || (int) $prev['day'] !== $dayN || $prev['source'] === 'manual') {
             DB::insert('pace_snapshots', ['campaign_id' => $c['id'], 'day' => $dayN, 'spend' => (int) round($t['spend']), 'installs' => (int) round($t['installs']), 'conversions' => (int) round($t['conversions']), 'source' => 'sync', 'created_at' => DB::now()]);
             $plan = Loop::plan((int) $c['id']);
-            if ($plan) {
+            if ($plan && empty($c['current_run_id'])) {
                 \App\Controllers\CampaignController::paceAlerts($ws, $c, $plan, ['day' => $dayN, 'spend' => $t['spend'], 'installs' => $t['installs'], 'conv' => $t['conversions']]);
             }
         }
