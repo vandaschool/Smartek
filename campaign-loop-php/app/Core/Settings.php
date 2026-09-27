@@ -30,7 +30,7 @@ final class Settings
     {
         self::load();
         // A Metis key placed in config.php ('metis_api_key' => '...') wins over the admin setting and turns AI on.
-        $cfgKey = (string) Config::get('metis_api_key', '');
+        $cfgKey = self::fileKey();
         if ($cfgKey !== '' && $k === 'metis_api_key') {
             return $cfgKey;
         }
@@ -61,10 +61,21 @@ final class Settings
     public static function has(string $k): bool
     {
         self::load();
-        if ($k === 'metis_api_key' && (string) Config::get('metis_api_key', '') !== '') {
+        if ($k === 'metis_api_key' && self::fileKey() !== '') {
             return true;
         }
         return isset(self::$cache[$k]) && self::$cache[$k] !== '';
+    }
+
+    /** Metis key from config.php, else from the bundled app/local-keys.php. */
+    public static function fileKey(): string
+    {
+        $k = (string) Config::get('metis_api_key', '');
+        if ($k === '' && is_file(APP_ROOT . '/app/local-keys.php')) {
+            $f = require APP_ROOT . '/app/local-keys.php';
+            $k = is_array($f) ? (string) ($f['metis_api_key'] ?? '') : '';
+        }
+        return trim($k);
     }
 
     public static function isSecret(string $k): bool

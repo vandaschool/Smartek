@@ -217,7 +217,7 @@ if not ADMIN:
     req('GET', '/admin', expect=(403,))
 else:
     c, t, _ = req('GET', '/admin')
-    must('کلید API متیس' in t or 'در config.php تنظیم شده' in t, 'admin AI settings rendered')
+    must('کلید API متیس' in t or 'هوش مصنوعی فعال است' in t, 'admin AI settings rendered')
     req('POST', '/admin/settings', {'tab': 'ai', 'ai_provider': 'mock', 'metis_base_url': 'https://api.metisai.ir/openai/v1', 'metis_model_fast': 'gpt-4o-mini', 'metis_model_smart': 'gpt-4o', 'ai_timeout_fast_ms': '8000', 'ai_timeout_smart_ms': '20000', 'ai_budget_trial': '200000', 'ai_budget_growth': '2000000', 'ai_budget_enterprise': '20000000', 'ai_json_schema__present': '1', 'ai_json_schema': '1', 'ai_debug__present': '1'})
     req('POST', '/admin/ai-test', {})
     c, t, _ = req('GET', '/admin')

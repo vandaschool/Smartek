@@ -6,3 +6,4 @@ campaign-loop-php/storage/uploads/*
 !campaign-loop-php/storage/**/.htaccess
 !campaign-loop-php/storage/**/index.html
 dist/
+campaign-loop-php/app/local-keys.php

@@ -55,7 +55,7 @@ final class AdminController extends Controller
         $breaker = json_decode((string) @file_get_contents(APP_ROOT . '/storage/cache/ai-breaker.json'), true) ?: [];
         $vals = [];
         foreach (self::FIELDS as $k => $f) {
-            $vals[$k] = $f[0] === 'secret' ? (Settings::has($k) ? '••••••••' : '') : Settings::get($k);
+            $vals[$k] = $f[0] === 'secret' ? (Settings::has($k) ? '••••••••' : '') : Settings::get($k, $k === 'skip_email_verification' ? '1' : '');
         }
         $this->page('admin', 'pages/admin', [
             'title' => 'مدیریت سامانه', 'v' => $vals, 'breaker' => $breaker,
@@ -85,7 +85,7 @@ final class AdminController extends Controller
             if ($type === 'bool') {
                 if (Request::has($k . '__present')) {
                     $v = Request::post($k) === '1' ? '1' : '0';
-                    if ($v !== Settings::get($k, '0')) {
+                    if ($v !== Settings::get($k, $k === 'skip_email_verification' ? '1' : '0')) {
                         Settings::set($k, $v);
                         $changed[] = $k;
                     }
