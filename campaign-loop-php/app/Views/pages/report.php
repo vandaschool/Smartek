@@ -7,7 +7,7 @@
       <form method="post" action="<?= e(url('/c/' . $c['id'] . '/share')) ?>" class="inline"><?= csrf_field() ?><button class="btn md"<?= Auth::verified() ? '' : ' disabled title="ابتدا ایمیل خود را تأیید کنید"' ?>>ساختن لینک اشتراک</button></form>
       <button type="button" class="btn md" data-print>چاپ / PDF</button>
       <?php if (!$report['closed'] && $report['hasResult']): ?>
-        <form method="post" action="<?= e(url('/c/' . $c['id'] . '/close')) ?>" class="inline" data-confirm="کمپین بسته و در دفترچه‌ی دیدگاه‌ها ثبت می‌شود. ادامه می‌دهید؟"><?= csrf_field() ?><button class="btn primary md"<?= perm('result') ?>>بستن کمپین و ثبت در دفترچه</button></form>
+        <form method="post" action="<?= e(url('/c/' . $c['id'] . '/close')) ?>" class="inline" id="close" data-confirm="کمپین بسته و در دفترچه‌ی دیدگاه‌ها ثبت می‌شود. ادامه می‌دهید؟"><?= csrf_field() ?><button class="btn primary md"<?= perm('result') ?>>بستن کمپین و ثبت در دفترچه</button></form>
       <?php endif; ?>
     <?php endif; ?>
   </div>

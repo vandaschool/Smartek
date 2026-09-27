@@ -8,7 +8,7 @@ DirectoryIndex index.php
   RewriteCond %{HTTP:Authorization} .
   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
   # Block direct access to application internals
-  RewriteRule ^(app|database|storage|tests|prompts|tools)(/|$) - [F,L,NC]
+  RewriteRule ^(app|database|storage|tests|prompts|tools|docs)(/|$) - [F,L,NC]
   RewriteRule ^(config\.php|config\.sample\.php|README.*|.*\.md|.*\.sql)$ - [F,L,NC]
   # Serve existing files (assets, install/, cron.php) directly
   RewriteCond %{REQUEST_FILENAME} -f [OR]

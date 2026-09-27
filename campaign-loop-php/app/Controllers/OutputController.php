@@ -210,7 +210,8 @@ final class OutputController extends Controller
         $rates = Ws::rates($ws);
         $m = AI::askIntent($ws, $q, $e);
         $a = $e->answerIntent($m['intent'], $m['channel'], $m['segment'], $rates);
-        $p = AI::askPhrase($ws, $q, $m['intent'], $a);
+        // if the model didn't answer the intent call, don't make the user wait on a second call
+        $p = $m['ai'] || !AI::enabled($ws) ? AI::askPhrase($ws, $q, $m['intent'], $a) : ['text' => $a['text'], 'ai' => false];
         Audit::event('question_asked', ['grounded' => $a['grounded'], 'intent' => $m['intent']]);
         Response::json([
             'grounded' => $a['grounded'], 'text' => $p['text'], 'src' => $a['src'], 'intent' => $m['intent'],

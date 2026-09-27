@@ -17,8 +17,8 @@ final class Response
     public static function back(string $fallback = '/campaigns'): never
     {
         $ref = (string) ($_SERVER['HTTP_REFERER'] ?? '');
-        $host = (string) ($_SERVER['HTTP_HOST'] ?? '');
-        if ($ref !== '' && $host !== '' && parse_url($ref, PHP_URL_HOST) === $host) {
+        $host = strtolower((string) preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? '')));
+        if ($ref !== '' && $host !== '' && strtolower((string) parse_url($ref, PHP_URL_HOST)) === $host) {
             header('Location: ' . $ref, true, 303);
             throw new HttpStop('redirect');
         }

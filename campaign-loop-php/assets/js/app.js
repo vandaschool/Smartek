@@ -161,15 +161,22 @@
   });
 
   // AI: lazy "smart explanation" boxes
-  $$('[data-ai-src]').forEach(function (box) {
-    CL.get(box.getAttribute('data-ai-src')).then(function (d) {
-      if (!d || !d.ok) { box.remove(); return; }
-      var parts = [];
-      (d.items || []).forEach(function (it) { parts.push('<div><div class="k">' + it.k + '</div><div>' + escapeHtml(it.v) + '</div></div>'); });
-      box.innerHTML = '<div class="row gap8"><span class="ai-label">توضیح هوشمند</span>' + (d.ai && d.ai.fallback ? '' : '') + '</div>' + parts.join('');
-      box.hidden = false;
-    }).catch(function () { box.remove(); });
-  });
+  // loaded two at a time (shared hosts cap concurrent PHP processes), visible ones first
+  var aiQueue = $$('[data-ai-src]'), aiActive = 0;
+  function aiNext() {
+    while (aiActive < 2 && aiQueue.length) {
+      var box = aiQueue.shift();
+      aiActive++;
+      CL.get(box.getAttribute('data-ai-src')).then(function (b) { return function (d) {
+        if (!d || !d.ok) { b.remove(); return; }
+        var parts = [];
+        (d.items || []).forEach(function (it) { parts.push('<div><div class="k">' + it.k + '</div><div>' + escapeHtml(it.v) + '</div></div>'); });
+        b.innerHTML = '<div class="row gap8"><span class="ai-label">توضیح هوشمند</span></div>' + parts.join('');
+        b.hidden = false;
+      }; }(box), function (b) { return function () { b.remove(); }; }(box)).then(function () { aiActive--; aiNext(); });
+    }
+  }
+  aiNext();
   function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   // AI: plan reason hint

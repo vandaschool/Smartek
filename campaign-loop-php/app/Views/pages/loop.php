@@ -5,7 +5,7 @@ $vr = $run['ver']['r'] ?? null;
 $cals = $run['cals'] ?? [];
 $sr = $sim['r'] ?? null;
 $chain = [
-    ['ایستگاه ۲ — طرح', $plan ? fa($plan['code']) . ' · v' . fa($plan['version']) : '', $plan ? 'دیدگاه: ' . $plan['perspective'] : 'اینسایتی انتخاب نشده', (bool) $plan],
+    ['ایستگاه ۲ — طرح', $plan ? fa($plan['code']) . ' · نسخه‌ی ' . fa($plan['version']) : '', $plan ? 'دیدگاه: ' . $plan['perspective'] : 'اینسایتی انتخاب نشده', (bool) $plan],
     ['ایستگاه ۳ — پیش‌بینی', $sim ? fa($sim['code']) : '', $sr ? 'CAC ' . money($sr['cac']) . ' · بازه از نوسان تاریخی' : 'طرحی برای پیش‌بینی نیست', (bool) $sim],
     ['اجرای واقعی', $run ? fa($run['code']) : '', $vr ? 'علت: ' . $vr['cause'] : 'نتیجه‌ای ثبت نشده', (bool) $run],
     ['ایستگاه ۱ — کالیبراسیون', $cals ? fa(implode(', ', array_column($cals, 'code'))) : '', $cals ? 'ردیف ' . implode('، ', array_column($cals, 'row_label')) . ' به‌روزرسانی شد' : ($vr && empty($vr['calib']) ? 'در این شاخه اعمال نمی‌شود' : 'کالیبراسیونی اعمال نشده'), (bool) $cals],

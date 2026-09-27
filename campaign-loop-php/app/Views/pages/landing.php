@@ -101,7 +101,7 @@
           <div class="callout ok">درخواست <?= e($lead['name']) ?> ثبت شد. همکاران ما با <span class="ltr"><?= e($lead['contact']) ?></span> تماس می‌گیرند.</div>
         <?php else: ?>
           <form method="post" action="<?= e(url('/lead')) ?>" class="col gap12"><?= csrf_field() ?>
-            <input type="text" name="website" value="" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+            <input type="text" name="website" value="" tabindex="-1" autocomplete="off" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;inset:0 auto auto 0;clip-path:inset(50%)" aria-hidden="true">
             <?php foreach (['utm_source', 'utm_medium', 'utm_campaign'] as $u): ?><input type="hidden" name="<?= $u ?>" value="<?= e($_GET[$u] ?? '') ?>"><?php endforeach; ?>
             <input type="hidden" name="referrer" value="<?= e($_SERVER['HTTP_REFERER'] ?? '') ?>">
             <div class="grid" style="--min:180px;gap:10px">

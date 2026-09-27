@@ -197,7 +197,8 @@ final class Loop
     {
         $j = Jalali::today();
         $start = Jalali::toIso(substr($j, 0, 8) . '01') ?? date('Y-m-01');
-        return (int) DB::val('SELECT COUNT(*) FROM plans WHERE workspace_id = ? AND created_at >= ?', [$ws, $start . ' 00:00:00']);
+        // plans without a creator are the seeded sample campaign → not counted
+        return (int) DB::val('SELECT COUNT(*) FROM plans WHERE workspace_id = ? AND created_by IS NOT NULL AND created_at >= ?', [$ws, $start . ' 00:00:00']);
     }
 
     /**
@@ -228,7 +229,7 @@ final class Loop
             if ($plan) {
                 DB::insert('plan_versions', ['plan_id' => $plan['id'], 'version' => $plan['version'], 'perspective' => $plan['perspective'], 'reason' => $plan['reason'], 'allocation' => $plan['allocation'], 'note' => 'ویرایش دیدگاه', 'created_by' => Auth::id() ?: null, 'created_at' => DB::now()]);
                 DB::update('plans', ['version' => (int) $plan['version'] + 1, 'perspective' => $persp, 'primary_id' => $sel, 'secondary_id' => $sec, 'mix' => $sec ? $mix : 100, 'reason' => $reason, 'reason_specific' => $reasonSpecific, 'allocation' => self::enc($alloc), 'goal_type' => $c['goal_type'], 'goal_value' => $c['goal_value'], 'benchmark_based' => $benchmark ? 1 : 0, 'updated_at' => DB::now()], ['id' => $plan['id']]);
-                Audit::log('ویرایش طرح v' . Fmt::fa((string) ((int) $plan['version'] + 1)) . ' ' . Fmt::fa($plan['code']), $persp);
+                Audit::log('ویرایش طرح نسخه‌ی ' . Fmt::fa((string) ((int) $plan['version'] + 1)) . ' ' . Fmt::fa($plan['code']), $persp);
                 Audit::event('plan_edited', ['perspective' => $persp, 'version' => (int) $plan['version'] + 1]);
                 Audit::notify('طرح ' . $plan['code'] . ' ویرایش شد (نسخه‌ی ' . Fmt::fa((string) ((int) $plan['version'] + 1)) . ').', 'info', '/c/' . $c['id'] . '/sim', $ws, null, 'plan_changed');
                 return ['ok' => true, 'editing' => true];

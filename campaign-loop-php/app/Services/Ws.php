@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Core\DB;
 use App\Core\Jalali;
+use App\Core\Log;
 use App\Engine\Engine;
 use App\Engine\Seed;
 
@@ -145,6 +146,7 @@ final class Ws
             DB::insert('merchant_profiles', ['workspace_id' => $ws]);
             if ($demo) {
                 self::seedDemo($ws);
+                self::seedSampleCampaign($ws);
             }
             DB::q('UPDATE users SET last_workspace_id = ? WHERE id = ?', [$ws, $ownerId]);
             return $ws;
@@ -210,6 +212,49 @@ final class Ws
             DB::q('UPDATE rules SET exec_th=0.15, est_th=0.25, scale_lo=0.8, scale_hi=1.2, inflation=0.035, attr_window=7, fraud_th=0.08 WHERE workspace_id = ?', [$ws]);
         });
         self::seedDemo($ws);
+        self::seedSampleCampaign($ws);
+    }
+
+    /**
+     * A ready sample campaign (designed → 10 insights → plan → forecast, running today) so a new user's tour
+     * and every loop page show real content. Created without a user (created_by NULL) so it doesn't count
+     * toward the trial's monthly plan limit.
+     */
+    public static function seedSampleCampaign(int $ws): void
+    {
+        try {
+            $from = date('Y-m-d', strtotime('-10 days'));
+            $to = date('Y-m-d', strtotime('+19 days'));
+            $cid = DB::insert('campaigns', [
+                'workspace_id' => $ws, 'name' => 'کمپین نمونه', 'status' => 'draft', 'goal_type' => 'خرید', 'goal_value' => 2500,
+                'budget' => 500000000, 'date_from' => $from, 'date_to' => $to, 'channels' => Loop::enc(Engine::CHANNELS),
+                'segments' => Loop::enc(Engine::SEGMENTS), 'occasion' => 'بدون مناسبت', 'risk' => 'متعادل', 'created_at' => DB::now(),
+            ]);
+            $c = Loop::campaign($ws, $cid);
+            $r = Loop::design($ws, $c, [
+                'name' => 'کمپین نمونه — آشنایی با حلقه', 'goalType' => 'خرید', 'goalValue' => 2500, 'budget' => 500000000,
+                'from' => Jalali::fromIso($from), 'to' => Jalali::fromIso($to), 'channels' => Engine::CHANNELS, 'segments' => Engine::SEGMENTS,
+                'occasion' => 'بدون مناسبت', 'risk' => 'متعادل',
+            ]);
+            if ($r['errors']) {
+                return;
+            }
+            $c = Loop::campaign($ws, $cid);
+            $ins = Loop::j($c['insights']) ?: [];
+            $ids = array_column($ins, 'id');
+            $sel = in_array('cfo', $ids, true) ? 'cfo' : (string) ($ids[0] ?? '');
+            if ($sel === '') {
+                return;
+            }
+            Loop::savePlan($ws, $c, $sel, null, 100, 'نمونه: سود واحد مثبت مهم‌تر از حجم است؛ این طرح را برای آشنایی با حلقه ساخته‌ایم.');
+            $c = Loop::campaign($ws, $cid);
+            $plan = Loop::plan($cid);
+            if ($plan) {
+                Loop::saveSim($ws, $c, $plan);
+            }
+        } catch (\Throwable $e) {
+            Log::error('sample campaign', ['msg' => $e->getMessage()]);
+        }
     }
 
     /** Industry benchmark start: seed rates with sample_n = 3, age 0, source benchmark (prototype `benchmarks`). */

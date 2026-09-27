@@ -76,6 +76,9 @@ final class AuthController extends Controller
         Auth::login($uid);
         $to = (string) Session::get('intended', '/campaigns');
         Session::forget('intended');
+        if (!empty(Auth::user()['must_change_password'])) {
+            Response::redirect('/settings/password');
+        }
         Response::redirect(str_starts_with($to, '/') ? $to : '/campaigns');
     }
 

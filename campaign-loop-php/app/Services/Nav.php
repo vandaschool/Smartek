@@ -57,7 +57,11 @@ final class Nav
         $id = (int) Session::get('cur_campaign', 0);
         if ($id > 0 && !DB::val('SELECT 1 FROM campaigns WHERE id = ? AND workspace_id = ?', [$id, Auth::wsId()])) {
             Session::forget('cur_campaign');
-            return 0;
+            $id = 0;
+        }
+        if ($id === 0) {
+            // no campaign opened in this session yet → the most recent live one (e.g. the sample campaign of a new workspace)
+            $id = (int) DB::val("SELECT id FROM campaigns WHERE workspace_id = ? AND status = 'live' ORDER BY id DESC LIMIT 1", [Auth::wsId()]);
         }
         return $id;
     }
@@ -103,10 +107,15 @@ final class Nav
         $wsList = DB::all('SELECT w.id, w.name FROM workspaces w JOIN memberships m ON m.workspace_id = w.id WHERE m.user_id = ? AND w.deleted_at IS NULL ORDER BY w.id', [Auth::id()]);
         $notifs = DB::all('SELECT * FROM notifications WHERE user_id = ? AND workspace_id = ? ORDER BY id DESC LIMIT 20', [Auth::id(), $ws]);
         $unread = (int) DB::val('SELECT COUNT(*) FROM notifications WHERE user_id = ? AND workspace_id = ? AND read_at IS NULL', [Auth::id(), $ws]);
+        $loop = self::loopBar($cid);
+        if ($page === 'report' && $loop['next']['label'] === 'دیدن گزارش کمپین') {
+            // already on the report: the next step is the close button on this page
+            $loop['next'] = ['label' => 'بستن حلقه', 'href' => $loop['next']['href'] . '#close'];
+        }
         return [
             'page' => $page, 'phases' => $phases, 'steps' => $steps,
             'phaseLabel' => self::PHASES[$ph]['label'] . ' · ' . self::PHASES[$ph]['sub'],
-            'loop' => self::loopBar($cid),
+            'loop' => $loop,
             'wsList' => $wsList, 'notifs' => $notifs, 'unread' => $unread,
         ];
     }

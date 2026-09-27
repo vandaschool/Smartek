@@ -36,7 +36,7 @@ $simCode = $saved['code'] ?? '';
     <div class="callout ok small" style="color:var(--warn-s)">ضریب عامل بیرونی: <strong>فرض اثبات‌نشده</strong></div>
     <?php if ($occ['lift']): ?><div class="xs t3">مناسبت: <?= e($occ['k']) ?> (اثر خرید <?= e(spct($occ['lift'])) ?> / هزینه <?= e(spct($occ['cpi'])) ?>)</div><?php endif; ?>
     <div class="grow"></div>
-    <div class="idlbl">plan_id: <?= e(fa($plan['code'])) ?> · v<?= fa($plan['version']) ?><?= $simCode ? ' · sim_id: ' . e(fa($simCode)) : '' ?></div>
+    <div class="idlbl">plan_id: <?= e(fa($plan['code'])) ?> · نسخه‌ی <?= fa($plan['version']) ?><?= $simCode ? ' · sim_id: ' . e(fa($simCode)) : '' ?></div>
     <noscript><button class="btn sm">به‌روزرسانی</button></noscript>
   </form>
 

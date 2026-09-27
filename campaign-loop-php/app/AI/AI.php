@@ -159,7 +159,18 @@ final class AI
             } else {
                 $body['response_format'] = ['type' => 'json_object'];
             }
-            $r = Http::postJson(rtrim(Settings::get('metis_base_url', 'https://api.metisai.ir/openai/v1'), '/') . '/chat/completions', $body, ['Authorization' => 'Bearer ' . Settings::get('metis_api_key')], $timeout);
+            // release the session file lock while waiting for the model, so the user's other requests don't queue behind it
+            $hadSession = session_status() === PHP_SESSION_ACTIVE;
+            if ($hadSession) {
+                session_write_close();
+            }
+            try {
+                $r = Http::postJson(rtrim(Settings::get('metis_base_url', 'https://api.metisai.ir/openai/v1'), '/') . '/chat/completions', $body, ['Authorization' => 'Bearer ' . Settings::get('metis_api_key')], $timeout);
+            } finally {
+                if ($hadSession && !headers_sent()) {
+                    @session_start(['use_cookies' => 0]);
+                }
+            }
             $usage = $r['data']['usage'] ?? [];
             $tin = (int) ($usage['prompt_tokens'] ?? 0);
             $tout = (int) ($usage['completion_tokens'] ?? 0);
@@ -172,7 +183,8 @@ final class AI
                 }
                 self::breakerFail();
                 self::logCall($ws, $task, $model, $r['ms'], $tin, $tout, $r['status'] === 0 ? 'timeout' : 'error', $lastErr);
-                if ($attempts < 2) {
+                // retry once only for quick transient failures; a timeout or slow error would just double the user's wait
+                if ($attempts < 2 && $r['status'] !== 0 && $r['ms'] < 3000 && ($r['status'] === 429 || $r['status'] >= 500)) {
                     usleep(random_int(200, 600) * 1000);
                     continue;
                 }

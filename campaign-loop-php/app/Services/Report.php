@@ -41,7 +41,7 @@ final class Report
             'merchant' => $company . ' · هدف کسب‌وکار: ' . ($p['goal'] ?: '—') . ' · حاشیه‌ی سود ' . Fmt::pct((float) $p['margin'], 0),
             'window' => Jalali::fa((string) $c['date_from']) . ' تا ' . Jalali::fa((string) $c['date_to']),
             'chain' => [
-                ['k' => 'plan_id', 'v' => $plan['code'] . ' · v' . $plan['version']],
+                ['k' => 'plan_id', 'v' => $plan['code'] . ' · نسخه‌ی ' . $plan['version']],
                 ['k' => 'sim_id', 'v' => $sim['code'] ?? '—'],
                 ['k' => 'run_id', 'v' => $run['code'] ?? '—'],
                 ['k' => 'calibration_id', 'v' => $cals ? implode(', ', array_column($cals, 'code')) : '—'],

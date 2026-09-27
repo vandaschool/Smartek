@@ -533,14 +533,17 @@ final class CampaignController extends Controller
     {
         $r = Loop::calibrate($this->ws(), (int) $id);
         $this->flash($r['ok'] ? 'کالیبراسیون ' . Fmt::fa(implode('، ', $r['codes'])) . ' اعمال شد.' : $r['error'], $r['ok'] ? 'ok' : 'bad');
-        Response::back('/verify');
+        $run = Loop::run((int) $id);
+        Response::redirect($run && $run['campaign_id'] && (int) $run['workspace_id'] === $this->ws() ? '/c/' . $run['campaign_id'] . '/verify#card' : '/verify');
     }
 
     public function undo(string $id): void
     {
+        $cal = DB::one('SELECT run_id FROM calibrations WHERE id = ? AND workspace_id = ?', [(int) $id, $this->ws()]);
         $r = Loop::undo($this->ws(), (int) $id);
         $this->flash($r['ok'] ? 'کالیبراسیون بازگردانده شد.' : $r['error'], $r['ok'] ? 'ok' : 'bad');
-        Response::back('/verify');
+        $run = $cal ? Loop::run((int) $cal['run_id']) : null;
+        Response::redirect($run && $run['campaign_id'] ? '/c/' . $run['campaign_id'] . '/verify#card' : '/verify');
     }
 
     // ------------------------------------------------------------------ outputs
