@@ -37,7 +37,8 @@ $aiLive = $v['ai_provider'] === 'metis' && $v['metis_api_key'] !== '';
       <?php if ($aiLive && !$bOpen): ?><span class="badge teal">فعال</span><?php elseif ($bOpen): ?><span class="badge bad">قطع موقت (مدارشکن)</span><?php else: ?><span class="badge gray">حالت قالبی</span><?php endif; ?></div>
     <div class="callout info small">لایه‌ی ۲ فقط روایت می‌کند؛ همه‌ی اعداد از موتور می‌آیند و فایروال عدد هر پاسخی را که عدد تازه بسازد رد می‌کند. در حالت «قالبی» یا هنگام خطا، متن از قالب‌های قطعی ساخته می‌شود و محصول بدون وقفه کار می‌کند.</div>
     <?= $row('ارائه‌دهنده', $sel('ai_provider', ['mock' => 'قالبی (بدون هوش مصنوعی)', 'metis' => 'متیس — OpenAI-compatible'], $v['ai_provider']), 'برای فعال‌سازی، «متیس» را انتخاب و کلید را وارد کنید.', 'ai_provider') ?>
-    <?= $row('کلید API متیس', $sec('metis_api_key', $v['metis_api_key']), 'از پنل metisai.ir ← API Keys', 'metis_api_key') ?>
+    <?php if ((string) \App\Core\Config::get('metis_api_key', '') !== ''): ?><div class="callout ok small">کلید متیس در config.php تنظیم شده و هوش مصنوعی فعال است. برای تغییر یا غیرفعال‌سازی، همان خط را در config.php ویرایش کنید.</div><?php else: ?>
+    <?= $row('کلید API متیس', $sec('metis_api_key', $v['metis_api_key']), 'از پنل metisai.ir ← API Keys', 'metis_api_key') ?><?php endif; ?>
     <?= $row('آدرس پایه', $inp('metis_base_url', $v['metis_base_url'], ' placeholder="https://api.metisai.ir/openai/v1"'), 'POST {base}/chat/completions', 'metis_base_url') ?>
     <?= $row('مدل سریع', $inp('metis_model_fast', $v['metis_model_fast']), 'دسته‌بندی پرسش، نگاشت ستون CSV، راهنمای دلیل', 'metis_model_fast') ?>
     <?= $row('مدل دقیق', $inp('metis_model_smart', $v['metis_model_smart']), 'توضیح اینسایت، روایت راستی‌آزمایی، خلاصه‌ی ماهانه', 'metis_model_smart') ?>
@@ -96,6 +97,7 @@ $aiLive = $v['ai_provider'] === 'metis' && $v['metis_api_key'] !== '';
     <?= $row('آدرس API ادتریس', $inp('adtrace_base_url', $v['adtrace_base_url'], ' placeholder="https://…"'), '', 'adtrace_base_url') ?>
     <?= $row('آدرس API اینترک', $inp('intrack_base_url', $v['intrack_base_url'], ' placeholder="https://…"'), '', 'intrack_base_url') ?>
     <?= $chk('demo_enabled', $v['demo_enabled'], 'دکمه‌ی «ورود با حساب دمو» در صفحه‌ی ورود فعال باشد (حساب موقت ۷ روزه)') ?>
+    <?= $chk('skip_email_verification', $v['skip_email_verification'], 'حالت آزمون MVP: تأیید ایمیل لازم نباشد (برای وقتی که ایمیل هاست به‌دست کاربران نمی‌رسد)') ?>
     <div class="row gap8"><button class="btn primary">ذخیره</button></div>
   </form>
 

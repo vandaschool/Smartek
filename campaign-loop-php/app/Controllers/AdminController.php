@@ -46,6 +46,7 @@ final class AdminController extends Controller
         'adtrace_base_url' => ['url', null],
         'intrack_base_url' => ['url', null],
         'demo_enabled' => ['bool', null],
+        'skip_email_verification' => ['bool', null],
     ];
 
     public function index(): void

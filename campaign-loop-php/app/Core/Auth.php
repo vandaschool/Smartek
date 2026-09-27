@@ -144,7 +144,7 @@ final class Auth
 
     public static function verified(): bool
     {
-        return !empty(self::user()['email_verified_at']);
+        return !empty(self::user()['email_verified_at']) || Settings::bool('skip_email_verification');
     }
 
     public static function login(int $uid): void

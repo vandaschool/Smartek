@@ -5,6 +5,7 @@ Usage: python3 tests/e2e.py http://127.0.0.1:8080 admin@test.ir Test12345
 import sys, re, json, urllib.request, urllib.parse, http.cookiejar
 
 BASE, EMAIL, PASS = sys.argv[1].rstrip('/'), sys.argv[2], sys.argv[3]
+ADMIN = 'noadmin' not in sys.argv[4:]
 cj = http.cookiejar.CookieJar()
 
 
@@ -69,6 +70,8 @@ c, t, loc = req('POST', f'/c/{cid}/design', {'name': 'کمپین آزمون', 'g
                                              'channels[]': ['گوگل', 'تپسل', 'یکتانت', 'اینستاگرام', 'پوش', 'پیامک'], 'segments[]': ['کاربر جدید', 'فعال', 'در معرض ریزش', 'پرارزش', 'بازگشتی'], 'occasion': 'بدون مناسبت', 'risk': 'متعادل'})
 must(loc.endswith(f'/c/{cid}/insights'), 'design → insights')
 c, t, _ = req('GET', f'/c/{cid}/insights')
+for src in re.findall(r'data-ai-src="([^"]+)"', t)[:3]:
+    req('GET', src.replace(BASE, ''))
 must(t.count('class="ins-h"') == 10, 'ten insight cards')
 must('NaN' not in t, 'no NaN on insights page')
 req('GET', f'/c/{cid}/insights?sel=analyst')
@@ -130,7 +133,7 @@ must(d.get('grounded') and 'کمترین CAC' in d.get('text', ''), 'ask grounde
 c, t, _ = req('POST', '/ask', json_body={'q': 'قیمت دلار فردا؟'})
 must(not json.loads(t).get('grounded'), 'ask ungrounded')
 
-for p in ['/connect', '/team', '/rules', '/audit', '/analytics', '/security', '/billing', '/help', '/settings', '/admin']:
+for p in ['/connect', '/team', '/rules', '/audit', '/analytics', '/security', '/billing', '/help', '/settings'] + (['/admin'] if ADMIN else []):
     req('GET', p)
 
 
@@ -210,15 +213,18 @@ if rid:
     req('POST', f'/runs/{rid.group(1)}/confirm', {})
 
 # admin
-c, t, _ = req('GET', '/admin')
-must('کلید API متیس' in t, 'admin AI settings rendered')
-req('POST', '/admin/settings', {'tab': 'ai', 'ai_provider': 'mock', 'metis_base_url': 'https://api.metisai.ir/openai/v1', 'metis_model_fast': 'gpt-4o-mini', 'metis_model_smart': 'gpt-4o', 'ai_timeout_fast_ms': '8000', 'ai_timeout_smart_ms': '20000', 'ai_budget_trial': '200000', 'ai_budget_growth': '2000000', 'ai_budget_enterprise': '20000000', 'ai_json_schema__present': '1', 'ai_json_schema': '1', 'ai_debug__present': '1'})
-req('POST', '/admin/ai-test', {})
-c, t, _ = req('GET', '/admin')
-must('کلید متیس وارد نشده است' in t, 'AI test reports missing key')
-tk = re.search(r'/admin/ticket/(\d+)', t)
-if tk:
-    req('POST', f'/admin/ticket/{tk.group(1)}', {'reply': 'پاسخ آزمایشی'})
+if not ADMIN:
+    req('GET', '/admin', expect=(403,))
+else:
+    c, t, _ = req('GET', '/admin')
+    must('کلید API متیس' in t or 'در config.php تنظیم شده' in t, 'admin AI settings rendered')
+    req('POST', '/admin/settings', {'tab': 'ai', 'ai_provider': 'mock', 'metis_base_url': 'https://api.metisai.ir/openai/v1', 'metis_model_fast': 'gpt-4o-mini', 'metis_model_smart': 'gpt-4o', 'ai_timeout_fast_ms': '8000', 'ai_timeout_smart_ms': '20000', 'ai_budget_trial': '200000', 'ai_budget_growth': '2000000', 'ai_budget_enterprise': '20000000', 'ai_json_schema__present': '1', 'ai_json_schema': '1', 'ai_debug__present': '1'})
+    req('POST', '/admin/ai-test', {})
+    c, t, _ = req('GET', '/admin')
+    must('کلید متیس وارد نشده است' in t or 'callout bad small' in t or 'اتصال برقرار است' in t, 'AI test reports a result')
+    tk = re.search(r'/admin/ticket/(\d+)', t)
+    if tk:
+        req('POST', f'/admin/ticket/{tk.group(1)}', {'reply': 'پاسخ آزمایشی'})
 req('GET', '/audit?q=' + urllib.parse.quote('قاعده'))
 req('GET', '/analytics')
 

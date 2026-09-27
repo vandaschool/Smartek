@@ -29,6 +29,14 @@ final class Settings
     public static function get(string $k, string $default = ''): string
     {
         self::load();
+        // A Metis key placed in config.php ('metis_api_key' => '...') wins over the admin setting and turns AI on.
+        $cfgKey = (string) Config::get('metis_api_key', '');
+        if ($cfgKey !== '' && $k === 'metis_api_key') {
+            return $cfgKey;
+        }
+        if ($cfgKey !== '' && $k === 'ai_provider') {
+            return 'metis';
+        }
         $v = self::$cache[$k] ?? null;
         if ($v === null || $v === '') {
             return $default;
@@ -53,6 +61,9 @@ final class Settings
     public static function has(string $k): bool
     {
         self::load();
+        if ($k === 'metis_api_key' && (string) Config::get('metis_api_key', '') !== '') {
+            return true;
+        }
         return isset(self::$cache[$k]) && self::$cache[$k] !== '';
     }
 
