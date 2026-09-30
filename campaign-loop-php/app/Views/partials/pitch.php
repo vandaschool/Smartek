@@ -1,5 +1,5 @@
-<div class="col gap18">
-  <img src="<?= e(asset('img/logo-mark.png')) ?>" alt="Campaign Loop" style="width:84px;height:84px;display:block">
+<div class="col gap18 pitch">
+  <img class="pitch-mark" src="<?= e(asset('img/logo-mark.png')) ?>" alt="Campaign Loop" style="width:84px;height:84px;display:block">
   <h1 style="margin:0;font-size:30px;font-weight:700;letter-spacing:-.6px;line-height:1.45">حلقه‌ی کمپین را ببندید — طرح، پیش‌بینی، نتیجه، اصلاح نرخ.</h1>
   <p style="font-size:15px;line-height:1.95;color:var(--t3);max-width:46ch">سه ایستگاه روی یک زنجیره‌ی شناسه: Designer ده دیدگاه می‌دهد، Simulator بازه می‌سازد، Verifier انحراف را به علت نسبت می‌دهد و نرخ‌ها را کالیبره می‌کند.</p>
   <div class="col gap12 mt4">

@@ -1,6 +1,7 @@
 /* Campaign Loop — small progressive-enhancement layer (no framework). */
 (function () {
   'use strict';
+  document.documentElement.classList.add('js');
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var meta = function (n) { var m = $('meta[name="' + n + '"]'); return m ? m.getAttribute('content') : ''; };
@@ -116,7 +117,20 @@
   if (ob) { var on = function () { ob.hidden = navigator.onLine !== false; }; window.addEventListener('online', on); window.addEventListener('offline', on); on(); }
 
   // toasts auto-hide
-  setTimeout(function () { $$('.toast').forEach(function (t) { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; setTimeout(function () { t.remove(); }, 450); }); }, 5200);
+  setTimeout(function () { $$('.toast').forEach(function (t, i) { setTimeout(function () { t.classList.add('out'); setTimeout(function () { t.remove(); }, 320); }, i * 80); }); }, 5200);
+
+  // scroll reveal: blocks that start below the fold fade up when they enter the viewport
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.06 });
+    var fold = window.innerHeight + 40;
+    $$('.wrap .card, .wrap .grid > *, .pub-wrap .section .card').forEach(function (el) {
+      if (el.closest('.reveal') || el.closest('.modal')) return;
+      if (el.getBoundingClientRect().top > fold) { el.classList.add('reveal'); io.observe(el); }
+    });
+  }
 
   // tour
   var stepsEl = $('#tour-steps'), tour = $('#tour');
@@ -130,6 +144,7 @@
     $('[data-tour-x]', tour).textContent = steps[i].text;
     $('[data-tour-next]', tour).textContent = i === steps.length - 1 ? 'پایان تور' : 'بعدی ←';
     tour.hidden = false;
+    tour.classList.remove('bump'); void tour.offsetWidth; tour.classList.add('bump');
   }
   function goStep(i) {
     if (i >= steps.length) { endTour(); return; }
@@ -163,17 +178,23 @@
   // AI: lazy "smart explanation" boxes
   // loaded two at a time (shared hosts cap concurrent PHP processes), visible ones first
   var aiQueue = $$('[data-ai-src]'), aiActive = 0;
+  function fadeOut(el) { el.style.transition = 'opacity .2s, max-height .25s'; el.style.overflow = 'hidden'; el.style.maxHeight = el.offsetHeight + 'px'; el.style.opacity = '0'; requestAnimationFrame(function () { el.style.maxHeight = '0'; }); setTimeout(function () { el.remove(); }, 260); }
   function aiNext() {
     while (aiActive < 2 && aiQueue.length) {
       var box = aiQueue.shift();
       aiActive++;
+      box.classList.add('loading');
+      box.innerHTML = '<div class="row gap8"><span class="ai-label">توضیح هوشمند</span><span class="xs muted">در حال نوشتن</span><span class="typing"><i></i><i></i><i></i></span></div><div class="sk"></div><div class="sk s2"></div><div class="sk s3"></div>';
+      box.hidden = false;
       CL.get(box.getAttribute('data-ai-src')).then(function (b) { return function (d) {
-        if (!d || !d.ok) { b.remove(); return; }
+        if (!d || !d.ok) { fadeOut(b); return; }
         var parts = [];
         (d.items || []).forEach(function (it) { parts.push('<div><div class="k">' + it.k + '</div><div>' + escapeHtml(it.v) + '</div></div>'); });
+        b.classList.remove('loading');
         b.innerHTML = '<div class="row gap8"><span class="ai-label">توضیح هوشمند</span></div>' + parts.join('');
         b.hidden = false;
-      }; }(box), function (b) { return function () { b.remove(); }; }(box)).then(function () { aiActive--; aiNext(); });
+        b.style.animation = 'none'; void b.offsetWidth; b.style.animation = '';
+      }; }(box), function (b) { return function () { fadeOut(b); }; }(box)).then(function () { aiActive--; aiNext(); });
     }
   }
   aiNext();
@@ -201,7 +222,7 @@
     var out = $('#ask-out');
     var run = function (q) {
       askForm.q.value = q;
-      out.innerHTML = '<div class="card"><div class="small muted">در حال پاسخ…</div></div>';
+      out.innerHTML = '<div class="card"><div class="small muted row gap8">در حال پاسخ<span class="typing"><i></i><i></i><i></i></span></div></div>';
       CL.post(askForm.action, { q: q }).then(function (d) {
         if (!d) return;
         if (d.grounded) {

@@ -63,6 +63,7 @@ final class AiController extends Controller
             $cached = $r + ['cals' => $calCount, 'can' => $canCal];
             DB::update('verifications', ['narrative' => json_encode($cached, JSON_UNESCAPED_UNICODE)], ['id' => $run['ver']['id']]);
         }
+        $cached = AI::normalizeFa($cached);
         Response::json(['ok' => true, 'items' => [['k' => 'خلاصه', 'v' => $cached['summary']], ['k' => 'قدم بعدی', 'v' => $cached['next_step']]], 'ai' => ['provider' => 'metis', 'grounded' => true, 'fallback' => false]]);
     }
 

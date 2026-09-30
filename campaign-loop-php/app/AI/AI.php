@@ -224,6 +224,9 @@ final class AI
             $content = (string) ($r['data']['choices'][0]['message']['content'] ?? '');
             $content = trim(preg_replace('/^```(?:json)?|```$/m', '', $content) ?? $content);
             $data = json_decode($content, true);
+            if (is_array($data)) {
+                $data = self::normalizeFa($data);
+            }
             $okShape = is_array($data) && ($validate === null || $validate($data));
             if (!$okShape) {
                 $lastErr = 'schema';
@@ -244,6 +247,22 @@ final class AI
             return ['data' => $data, 'status' => 'ok'];
         }
         return ['data' => null, 'status' => 'fallback'];
+    }
+
+    /** Fix recurring model spelling slips in every string of the answer (Arabic ي/ك, «اینساید» → «اینسایت»). */
+    public static function normalizeFa(mixed $v): mixed
+    {
+        if (is_array($v)) {
+            foreach ($v as $k => $x) {
+                $v[$k] = $k === 'source_refs' || $k === 'mapping' ? $x : self::normalizeFa($x);
+            }
+            return $v;
+        }
+        if (!is_string($v)) {
+            return $v;
+        }
+        $v = strtr($v, ['ي' => 'ی', 'ك' => 'ک']);
+        return (string) preg_replace('/اینس[اآ]ی[دذ](?=\s|\x{200C}|$|[^\p{L}])/u', 'اینسایت', $v);
     }
 
     private static function str(mixed $v, int $max = 600): bool
